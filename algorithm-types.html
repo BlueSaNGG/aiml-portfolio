@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifact 1: Algorithm Types — Qi Jin Portfolio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>Artifact 1: Algorithm Types</h1>
+    <p class="sub">AIML-501: Model Development &middot; Workshop One &middot; Qi Jin</p>
+  </div>
+</header>
+<nav class="top">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="algorithm-types.html" class="active">Artifact 1: Algorithm Types</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">Introduction</h2>
+    <p>Algorithms are the backbone of machine learning: they are the procedures that turn
+    data into models, and models into predictions. Choosing the right algorithm starts
+    with classification — knowing what family an algorithm belongs to, what kind of data
+    it learns from, and what it is used for in the real world. This artifact is a visual
+    framework of twelve widely used algorithms, organized first by <em>learning style</em>
+    (supervised or unsupervised) and tagged by <em>application domain</em> (tabular data,
+    computer vision, natural language processing, and generative AI).</p>
+
+    <h3>Objective</h3>
+    <p>To identify and categorize key machine learning algorithms accurately, illustrate
+    their types and primary application domains in one visually clear framework, and give
+    practical, real-world examples of each — creating a reference I can reuse whenever a
+    modeling problem requires selecting an approach.</p>
+
+    <h3>Description</h3>
+    <p>The framework below begins with the big picture — how artificial intelligence,
+    machine learning, and deep learning nest inside one another, and how learning splits
+    into supervised and unsupervised styles. It then presents each algorithm as a card:
+    its learning style, its application domains, a plain-English explanation of how it
+    works, and example applications. A closing section explains the reasoning behind the
+    classification itself.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Visual Framework</h2>
+
+    <div class="diagram" role="img" aria-label="Diagram: Artificial Intelligence contains Machine Learning, which contains Deep Learning. Machine learning splits into supervised learning (learns from labeled examples) and unsupervised learning (finds structure in unlabeled data).">
+      <svg viewBox="0 0 960 340" xmlns="http://www.w3.org/2000/svg" font-family="inherit">
+        <!-- Nested hierarchy -->
+        <rect x="10" y="10" width="560" height="200" rx="14" fill="#eef4fa" stroke="#2f6fb2" stroke-width="2"/>
+        <text x="28" y="42" font-size="19" font-weight="700" fill="#1f3b63">Artificial Intelligence (AI)</text>
+        <text x="28" y="64" font-size="13.5" fill="#5a6a7a">Systems that perform tasks requiring intelligence</text>
+        <rect x="38" y="80" width="500" height="118" rx="12" fill="#dcebf7" stroke="#2f6fb2" stroke-width="2"/>
+        <text x="56" y="110" font-size="18" font-weight="700" fill="#1f3b63">Machine Learning (ML)</text>
+        <text x="56" y="131" font-size="13.5" fill="#5a6a7a">Systems that learn patterns from data instead of fixed rules</text>
+        <rect x="66" y="142" width="440" height="46" rx="10" fill="#bcd7ef" stroke="#2f6fb2" stroke-width="2"/>
+        <text x="82" y="171" font-size="16.5" font-weight="700" fill="#1f3b63">Deep Learning (DL) — ML with deep neural networks</text>
+        <!-- Side branches -->
+        <rect x="600" y="10" width="350" height="92" rx="12" fill="#eaf1f8" stroke="#2f6fb2" stroke-width="2"/>
+        <text x="618" y="40" font-size="17" font-weight="700" fill="#2f6fb2">Supervised Learning</text>
+        <text x="618" y="63" font-size="13.5" fill="#33475c">Learns from labeled examples to predict an outcome:</text>
+        <text x="618" y="85" font-size="13.5" fill="#33475c">classification (a category) or regression (a number).</text>
+        <rect x="600" y="118" width="350" height="92" rx="12" fill="#f2eaf8" stroke="#7a4fa3" stroke-width="2"/>
+        <text x="618" y="148" font-size="17" font-weight="700" fill="#7a4fa3">Unsupervised Learning</text>
+        <text x="618" y="171" font-size="13.5" fill="#33475c">Finds hidden structure in unlabeled data:</text>
+        <text x="618" y="193" font-size="13.5" fill="#33475c">clusters, patterns, and compressed representations.</text>
+        <!-- Domain strip -->
+        <rect x="10" y="232" width="940" height="92" rx="12" fill="#ffffff" stroke="#d8e0e8" stroke-width="2"/>
+        <text x="28" y="262" font-size="16" font-weight="700" fill="#1f3b63">Application domains used in this framework</text>
+        <rect x="28" y="276" width="130" height="30" rx="15" fill="#2e7d5b"/><text x="93" y="296" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="middle">Tabular Data</text>
+        <rect x="170" y="276" width="160" height="30" rx="15" fill="#b25f2e"/><text x="250" y="296" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="middle">Computer Vision</text>
+        <rect x="342" y="276" width="80" height="30" rx="15" fill="#2e6db2"/><text x="382" y="296" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="middle">NLP</text>
+        <rect x="434" y="276" width="140" height="30" rx="15" fill="#a33d7a"/><text x="504" y="296" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="middle">Generative AI</text>
+        <text x="592" y="296" font-size="13.5" fill="#5a6a7a">— color tags on every card below</text>
+      </svg>
+    </div>
+
+    <div class="branch-title"><h3 style="color:var(--sup)">Supervised Learning</h3><div class="rule"></div></div>
+    <p class="muted small">Trained on labeled examples; used to predict a category (classification) or a number (regression).</p>
+    <div class="grid">
+
+      <div class="algo">
+        <h4>Linear Regression</h4><div class="type sup">Supervised &middot; Regression</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span></div>
+        <p><span class="lbl">How it works:</span> Fits the straight line (or plane) that best maps inputs to a numeric output by minimizing the overall prediction error.</p>
+        <p><span class="lbl">Used for:</span> House-price estimation, sales forecasting, predicting delivery times.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Logistic Regression</h4><div class="type sup">Supervised &middot; Classification</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span></div>
+        <p><span class="lbl">How it works:</span> Passes a linear score through an S-shaped (sigmoid) curve to produce a probability, then classifies by a threshold — despite the name, it is a classifier.</p>
+        <p><span class="lbl">Used for:</span> Customer-churn prediction, loan-default risk, medical screening.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Decision Tree</h4><div class="type sup">Supervised &middot; Classification &amp; Regression</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span></div>
+        <p><span class="lbl">How it works:</span> Asks a sequence of yes/no questions about the features, splitting the data at each step until each leaf holds a prediction. Fully interpretable — every decision can be read aloud.</p>
+        <p><span class="lbl">Used for:</span> Credit approval, fruit sorting, triage rules, eligibility checks.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Random Forest</h4><div class="type sup">Supervised &middot; Classification &amp; Regression</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span><span class="tag cv">Computer Vision</span></div>
+        <p><span class="lbl">How it works:</span> Builds hundreds of decision trees on random samples of the data and features, then lets them vote (classification) or average (regression), canceling out individual trees' errors.</p>
+        <p><span class="lbl">Used for:</span> Fraud detection, risk scoring, feature-importance analysis, image pixel classification.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Support Vector Machine (SVM)</h4><div class="type sup">Supervised &middot; Classification</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span><span class="tag cv">Computer Vision</span></div>
+        <p><span class="lbl">How it works:</span> Draws the boundary between classes with the widest possible margin; kernel functions let that boundary curve through higher-dimensional space when classes are not linearly separable.</p>
+        <p><span class="lbl">Used for:</span> Image classification, text categorization, bioinformatics (e.g., gene classification).</p>
+      </div>
+
+      <div class="algo">
+        <h4>K-Nearest Neighbors (KNN)</h4><div class="type sup">Supervised &middot; Classification &amp; Regression</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span><span class="tag cv">Computer Vision</span></div>
+        <p><span class="lbl">How it works:</span> Stores the training data and classifies a new item by the majority label of its K closest examples — "you are like the neighbors you resemble."</p>
+        <p><span class="lbl">Used for:</span> Recommendation ("similar items"), simple image recognition, anomaly spotting.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Naive Bayes</h4><div class="type sup">Supervised &middot; Classification</div>
+        <div class="tags"><span class="tag nlp">NLP</span><span class="tag tab">Tabular Data</span></div>
+        <p><span class="lbl">How it works:</span> Applies Bayes' theorem while (naively) treating each feature as independent evidence for a class; extremely fast and effective for text despite the simplification.</p>
+        <p><span class="lbl">Used for:</span> Spam filtering, sentiment analysis, document categorization.</p>
+      </div>
+
+    </div>
+
+    <div class="branch-title"><h3 style="color:var(--uns)">Unsupervised Learning</h3><div class="rule"></div></div>
+    <p class="muted small">Trained on unlabeled data; used to discover groups, structure, and compact representations.</p>
+    <div class="grid">
+
+      <div class="algo">
+        <h4>K-Means Clustering</h4><div class="type uns">Unsupervised &middot; Clustering</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span><span class="tag cv">Computer Vision</span></div>
+        <p><span class="lbl">How it works:</span> Picks K cluster centers, assigns each point to its nearest center, recomputes the centers, and repeats until the groups stop moving.</p>
+        <p><span class="lbl">Used for:</span> Customer segmentation, image compression and segmentation, market basket grouping.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Hierarchical Clustering</h4><div class="type uns">Unsupervised &middot; Clustering</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span></div>
+        <p><span class="lbl">How it works:</span> Repeatedly merges the two closest items or groups, building a tree (dendrogram) of groupings that can be cut at any level of detail.</p>
+        <p><span class="lbl">Used for:</span> Product taxonomies, gene-expression analysis, document organization.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Principal Component Analysis (PCA)</h4><div class="type uns">Unsupervised &middot; Dimensionality Reduction</div>
+        <div class="tags"><span class="tag tab">Tabular Data</span><span class="tag cv">Computer Vision</span></div>
+        <p><span class="lbl">How it works:</span> Rotates the data onto new axes ordered by how much variation each captures, so a few components can represent many original features with little information loss.</p>
+        <p><span class="lbl">Used for:</span> Visualizing high-dimensional data, compressing features before modeling, noise reduction.</p>
+      </div>
+
+    </div>
+
+    <div class="branch-title"><h3 style="color:var(--gen)">Deep Learning &amp; Generative AI</h3><div class="rule"></div></div>
+    <p class="muted small">Neural-network methods that cut across the styles above: they are usually trained supervised or self-supervised, and they power most modern vision, language, and generative systems.</p>
+    <div class="grid">
+
+      <div class="algo">
+        <h4>Neural Networks (Deep Learning)</h4><div class="type sup">Supervised / Self-supervised</div>
+        <div class="tags"><span class="tag cv">Computer Vision</span><span class="tag nlp">NLP</span><span class="tag gen">Generative AI</span><span class="tag tab">Tabular Data</span></div>
+        <p><span class="lbl">How it works:</span> Layers of simple units transform the input step by step; training adjusts millions of connection weights by gradient descent so the network's output matches the target. Depth lets it learn features (edges, then shapes, then objects) automatically.</p>
+        <p><span class="lbl">Used for:</span> Image and speech recognition, translation, image generation, game playing.</p>
+      </div>
+
+      <div class="algo">
+        <h4>Transformers &amp; Large Language Models</h4><div class="type sup">Self-supervised &middot; Generative</div>
+        <div class="tags"><span class="tag nlp">NLP</span><span class="tag gen">Generative AI</span></div>
+        <p><span class="lbl">How it works:</span> Text is split into tokens; a mechanism called attention lets every token weigh the relevance of the others, and the model is trained to predict the next token. Repeated prediction, at very large scale, produces fluent generation, summarization, and question answering.</p>
+        <p><span class="lbl">Used for:</span> Chatbots and assistants (e.g., ChatGPT), code generation, summarization, drafting and translation.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">How I Classified Them — And Why</h2>
+    <p>I classified on two axes, in a deliberate order. The <strong>primary axis is learning
+    style</strong> — supervised versus unsupervised — because it answers the first question
+    of any real project: <em>do I have labeled examples of the outcome I want?</em> If yes,
+    supervised methods apply; if no, the task is to discover structure, and unsupervised
+    methods apply. This single distinction decides feasibility before accuracy is even
+    discussed, so it forms the framework's main branches.</p>
+    <p>The <strong>secondary axis is application domain</strong> — tabular data, computer
+    vision, NLP, and generative AI — shown as color tags rather than branches, because
+    most algorithms serve more than one domain (a random forest can score credit risk from
+    a spreadsheet or classify pixels in an image). Tags preserve that many-to-many
+    relationship instead of forcing each algorithm into a single box.</p>
+    <p>Two judgment calls are worth explaining. First, deep learning gets its own band
+    rather than a branch: neural networks are a <em>model family</em>, not a learning style —
+    they are trained supervised for recognition, self-supervised for language models, and
+    they now dominate the generative-AI domain the course emphasizes. Placing them under
+    only one style would misstate how they are actually used. Second, within supervised
+    learning I note each algorithm's task (classification, regression, or both), because
+    "predict a category or predict a number" is the next decision a practitioner makes
+    after choosing the supervised branch.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Process</h2>
+    <ul>
+      <li>Reviewed the Workshop One resources on AI/ML/DL differences, machine learning algorithm families, NLP, and computer vision.</li>
+      <li>Selected twelve algorithms that span both learning styles and all four application domains, prioritizing the algorithms named in the course materials.</li>
+      <li>For each algorithm, verified its learning style, primary task, and representative real-world uses against the course resources.</li>
+      <li>Designed the framework as a hand-built web page: a hierarchy diagram, color-coded domain tags, and uniform cards so any two algorithms can be compared at a glance.</li>
+      <li>Wrote the classification rationale and reflection, and reviewed the page for accuracy, consistency, and readability on mobile and desktop.</li>
+    </ul>
+
+    <h3>Tools and Technologies Used</h3>
+    <p>Hand-written HTML5, CSS, and inline SVG (no frameworks), published with GitHub
+    Pages. Content sources: the Workshop One course resources, including Microsoft's
+    machine learning algorithms overview, AWS's "What is Machine Learning?", and the
+    articles on AI/ML/DL/GenAI differences listed in the references.</p>
+
+    <h3>Relevance</h3>
+    <p>Model selection is the highest-leverage decision in a machine learning project:
+    the wrong family wastes weeks, while the right one makes the rest of the pipeline
+    simpler. This framework is the checklist I will run through at the start of future
+    projects — labels first, domain second, interpretability and data size as
+    tie-breakers — and it anchors the more advanced model-development work in the rest
+    of this course and in my engineering practice.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Reflection on Learning</h2>
+    <p>Building this framework taught me that classification is itself a modeling
+    decision. I began expecting a tidy tree — every algorithm in exactly one box — and
+    discovered the interesting cases are the ones that refuse: deep learning spans
+    styles, and most algorithms span domains. Representing that honestly (branches for
+    the decisive distinction, tags for the many-to-many one) was the main design
+    challenge, and solving it clarified the material more than memorizing definitions
+    would have. I also saw my own Workshop One decision-tree assignment differently
+    afterward: the tree I wrote for fruit sorting is one card in this framework, and I
+    can now articulate exactly why it sits where it does — supervised, interpretable,
+    tabular-style features — and when I would reach for a different card instead.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">References</h2>
+    <ul class="small" style="list-style:none;margin-left:0">
+      <li>Amazon Web Services. (n.d.). <em>What is machine learning?</em> https://aws.amazon.com/what-is/machine-learning/</li>
+      <li>Couto, M. (2025). An introductory guide to computer vision.</li>
+      <li>Illing, D. (2024). A beginner's guide to understanding natural language processing (NLP) with GPT.</li>
+      <li>Microsoft. (n.d.). <em>Machine learning algorithms.</em> Microsoft Learn.</li>
+      <li>Trojahn, M., &amp; Costa, F. (2024). What are the differences between AI, ML, DL, and Gen AI?</li>
+    </ul>
+    <p class="small muted">Note: This artifact was prepared with AI assistance for drafting and layout; all classifications and explanations were reviewed by the author.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">&copy; 2026 Qi Jin &middot; Artifact 1, AIML-501: Model Development, Indiana Wesleyan University. <a href="index.html" style="color:#dce8f5">Back to portfolio home</a></div>
+</footer>
+</body>
+</html>
