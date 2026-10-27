@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifact 2: Visualizing Neural Networks | Qi Jin — Professional Portfolio</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .shot{width:100%;height:auto;border:1px solid var(--line);border-radius:8px;display:block}
+  figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+  table.data{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0}
+  table.data th,table.data td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  table.data th{background:var(--accent-soft);color:var(--navy)}
+  .flow-note{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>Visualizing Neural Networks</h1>
+    <p class="sub">Artifact 2 &middot; AIML-501 Workshop Two &middot; Structure, training, and what the Playground teaches</p>
+  </div>
+</header>
+<nav class="top">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="algorithm-types.html">Artifact 1: Algorithm Types</a>
+    <a href="neural-networks.html" class="active">Artifact 2: Visualizing Neural Networks</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">Introduction</h2>
+    <p>Neural networks are often described as black boxes: data goes in, predictions
+    come out, and what happens in between is left to mathematics. This artifact opens
+    that box. Using the TensorFlow Neural Network Playground, I trained small networks
+    on visible datasets and watched, epoch by epoch, how architecture choices change
+    the decision boundary, the training loss, and the test loss. The result is a visual
+    explanation of what each component of a neural network actually does.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Description</h2>
+    <p>The artifact has three parts. First, a diagram of a feedforward network's
+    architecture, showing data flowing from the input layer through hidden layers to
+    the output layer, with the training loop (loss, backpropagation, optimization)
+    drawn as a return path. Second, plain-English definitions of the six core
+    components: layers, neurons, weights, activation functions, loss functions, and
+    optimization algorithms. Third, six first-hand Playground experiments with the
+    exact settings and losses observed on screen, plus screenshots of three decisive
+    states. This artifact deliberately covers a different aspect of expertise than
+    Artifact 1: where Artifact 1 classifies <em>which</em> algorithm to choose,
+    this one explains <em>how</em> a neural network learns.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Objective</h2>
+    <ul>
+      <li>Define and explain the structure and function of each neural network component.</li>
+      <li>Show, visually, how data flows from input to output and how training corrects the network.</li>
+      <li>Demonstrate through experiments how depth, features, noise, and activation functions change learning.</li>
+      <li>Build intuition for underfitting, overfitting, and generalization that transfers to real models.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec">Neural Network Architecture: Data Flow</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Neural network architecture diagram">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#2f6fb2"></path>
+          </marker>
+          <marker id="arrBack" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#a33d7a"></path>
+          </marker>
+        </defs>
+        <text x="70" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1f3b63">INPUT LAYER</text>
+        <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1f3b63">HIDDEN LAYERS</text>
+        <text x="560" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1f3b63">OUTPUT LAYER</text>
+        <text x="700" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1f3b63">PREDICTION</text>
+        <circle cx="70" cy="90" r="22" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></circle>
+        <text x="70" y="95" text-anchor="middle" font-size="14">X&#8321;</text>
+        <circle cx="70" cy="170" r="22" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></circle>
+        <text x="70" y="175" text-anchor="middle" font-size="14">X&#8322;</text>
+        <circle cx="260" cy="70" r="20" fill="#fff" stroke="#2e7d5b" stroke-width="2"></circle>
+        <circle cx="260" cy="140" r="20" fill="#fff" stroke="#2e7d5b" stroke-width="2"></circle>
+        <circle cx="260" cy="210" r="20" fill="#fff" stroke="#2e7d5b" stroke-width="2"></circle>
+        <circle cx="380" cy="105" r="20" fill="#fff" stroke="#2e7d5b" stroke-width="2"></circle>
+        <circle cx="380" cy="175" r="20" fill="#fff" stroke="#2e7d5b" stroke-width="2"></circle>
+        <circle cx="560" cy="140" r="24" fill="#fbeef4" stroke="#a33d7a" stroke-width="2"></circle>
+        <text x="560" y="145" text-anchor="middle" font-size="14">&#374;</text>
+        <g stroke="#2f6fb2" stroke-width="1.6" marker-end="url(#arr)">
+          <line x1="92" y1="90" x2="240" y2="72"></line>
+          <line x1="92" y1="90" x2="240" y2="140"></line>
+          <line x1="92" y1="90" x2="240" y2="208"></line>
+          <line x1="92" y1="170" x2="240" y2="72"></line>
+          <line x1="92" y1="170" x2="240" y2="140"></line>
+          <line x1="92" y1="170" x2="240" y2="208"></line>
+          <line x1="280" y1="70" x2="360" y2="105"></line>
+          <line x1="280" y1="70" x2="360" y2="175"></line>
+          <line x1="280" y1="140" x2="360" y2="105"></line>
+          <line x1="280" y1="140" x2="360" y2="175"></line>
+          <line x1="280" y1="210" x2="360" y2="105"></line>
+          <line x1="280" y1="210" x2="360" y2="175"></line>
+          <line x1="400" y1="105" x2="536" y2="138"></line>
+          <line x1="400" y1="175" x2="536" y2="142"></line>
+          <line x1="584" y1="140" x2="676" y2="140"></line>
+        </g>
+        <text x="165" y="60" font-size="13" fill="#2f6fb2">weights</text>
+        <text x="320" y="50" font-size="13" fill="#2e7d5b">activation at each neuron</text>
+        <text x="700" y="145" text-anchor="middle" font-size="13">class / value</text>
+        <path d="M 560 210 Q 300 280 70 210" fill="none" stroke="#a33d7a" stroke-width="1.6" stroke-dasharray="6,4" marker-end="url(#arrBack)"></path>
+        <text x="315" y="268" text-anchor="middle" font-size="13" fill="#a33d7a">training loop: loss &#8594; backpropagation &#8594; optimizer updates weights</text>
+      </svg>
+    </div>
+    <p class="flow-note">Reading the diagram: forward pass moves left to right (blue arrows).
+    Each connection carries a weight; each hidden neuron applies an activation function.
+    The dashed return path is training: the loss measures the error, backpropagation
+    assigns blame to each weight, and the optimizer updates them. Training repeats
+    this loop for many epochs until the loss stops improving.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Six Components</h2>
+    <div class="grid">
+      <div class="algo">
+        <h4>Layers</h4>
+        <p><span class="lbl">Role — </span>Layers organize the network into stages.
+        The input layer passes data in without computing; hidden layers transform it,
+        each one learning more abstract features than the last; the output layer
+        produces the prediction. Depth (more hidden layers) buys expressive power:
+        in my experiments, a one-hidden-layer network could not trace a spiral at all,
+        while a deeper one began to follow its arms.</p>
+      </div>
+      <div class="algo">
+        <h4>Neurons</h4>
+        <p><span class="lbl">Role — </span>A neuron is a small computing unit: it takes
+        a weighted sum of its inputs, adds a bias, and passes the result through an
+        activation function. A single neuron draws one straight boundary; a layer of
+        neurons combines many such boundaries into curves, blobs, and eventually the
+        spiral arms seen in the Playground output.</p>
+      </div>
+      <div class="algo">
+        <h4>Weights</h4>
+        <p><span class="lbl">Role — </span>Weights are the network's memory. They set
+        how strongly each input influences each neuron, and training <em>is</em> the
+        process of adjusting them. In the Playground, connections are drawn thicker
+        and darker as their weights grow, so you can literally watch the network decide
+        which inputs to trust.</p>
+      </div>
+      <div class="algo">
+        <h4>Activation Functions</h4>
+        <p><span class="lbl">Role — </span>Without a nonlinear activation, stacked layers
+        collapse into a single linear model, no matter how deep the network is.
+        Tanh squashes values to (&minus;1, 1); ReLU passes positive values unchanged and
+        zeroes the rest, which trains fast; Sigmoid squashes to (0, 1) but learns
+        slowly at the extremes. On the circle task all three eventually succeeded, but
+        ReLU started fastest and Sigmoid slowest.</p>
+      </div>
+      <div class="algo">
+        <h4>Loss Functions</h4>
+        <p><span class="lbl">Role — </span>The loss function scores the network's
+        predictions against the truth: mean squared error for regression, cross-entropy
+        for classification. Every number in the experiments below is a loss value.
+        When the circle model's test loss reached 0.005, the boundary visibly matched
+        the data; when the small spiral model's test loss stuck near 0.45, the boundary
+        was visibly wrong. Loss is the one number that tells you whether learning
+        is happening.</p>
+      </div>
+      <div class="algo">
+        <h4>Optimization Algorithms</h4>
+        <p><span class="lbl">Role — </span>The optimizer decides how weights move in
+        response to the loss gradient. Plain gradient descent steps downhill by a
+        fixed learning rate: too large and training diverges, too small and it crawls.
+        All experiments below used learning rate 0.03 with batch size 10; Adam, the
+        common practical default, adapts the step size per weight and usually
+        converges faster and more stably.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Playground Experiments: What I Actually Observed</h2>
+    <p>Common settings unless noted: learning rate 0.03, batch size 10, 50% training /
+    50% test data, classification, no regularization. Loss values are exactly as shown
+    on screen; the Playground does not report accuracy.</p>
+    <table class="data">
+      <tr><th>Experiment</th><th>Settings</th><th>Observed result</th></tr>
+      <tr><td>1. Circle, small network</td><td>Circle, X&#8321;+X&#8322;, Tanh, 1 hidden layer (4 neurons), noise 0</td><td>Epoch 1,921: test loss 0.005, training loss 0.002. Smooth rounded-triangular blue center cleanly separated from the orange ring.</td></tr>
+      <tr><td>2. Spiral, same small network</td><td>Spiral, X&#8321;+X&#8322;, Tanh, 1 hidden layer (4 neurons), noise 0</td><td>Epoch 2,076: test loss 0.453, training loss 0.360. Only broad straight/diagonal bands; the boundary did not follow the spiral arms.</td></tr>
+      <tr><td>3. Spiral, bigger network</td><td>Spiral, X&#8321;+X&#8322;, Tanh, 2 hidden layers (4, 3 neurons), noise 0</td><td>Epoch 7,676: test loss 0.363, training loss 0.255 (plateau). Boundary more curved and wedge-like, following part of the spiral, but large arm sections still misclassified. Both losses stayed high: underfitting, not overfitting.</td></tr>
+      <tr><td>4. Circle with noise</td><td>Circle, X&#8321;+X&#8322;, Tanh, 1 hidden layer (4 neurons), noise 20</td><td>Epoch 4,138: test loss 0.106, training loss 0.083, roughly 10&times; the clean-circle losses. Boundary still a central blob but fuzzier, with points intermixed near the edge. Train and test losses stayed close: noisy data, not an overfitting split.</td></tr>
+      <tr><td>5. Activation functions</td><td>Circle, 1 hidden layer (4 neurons), noise 0</td><td>Tanh (epoch 1,921): test 0.005, training 0.002. ReLU (epoch 1,999): test 0.016, training 0.000, diamond-shaped boundary, fastest early progress. Sigmoid (epoch 2,024): test 0.009, training 0.006, slowest start but caught up. All three solved the clean circle by ~2,000 epochs.</td></tr>
+      <tr><td>6. Engineered features</td><td>Spiral, Tanh, 1 hidden layer (4 neurons), noise 0, inputs X&#8321;, X&#8322;, sin(X&#8321;), sin(X&#8322;)</td><td>Epoch 2,409: test loss 0.100, training loss 0.072, a dramatic improvement over the same small network without those features (test 0.453). Curved spiral-like arms emerged. Lesson: the right features can matter more than a bigger network.</td></tr>
+    </table>
+
+    <figure>
+      <img class="shot" src="playground-circle.png" alt="Playground: circle dataset solved by a small network, test loss 0.005">
+      <figcaption>Figure 1 — Circle dataset, 1 hidden layer (4 neurons), Tanh, epoch 1,921:
+      test loss 0.005, training loss 0.002. The blue center is cleanly separated from the orange ring.</figcaption>
+    </figure>
+    <figure>
+      <img class="shot" src="playground-spiral-small.png" alt="Playground: spiral dataset with a small network failing, test loss 0.453">
+      <figcaption>Figure 2 — Spiral dataset, same small network, epoch 2,076:
+      test loss 0.453, training loss 0.360. Broad bands instead of spiral arms: capacity, not effort, is the bottleneck.</figcaption>
+    </figure>
+    <figure>
+      <img class="shot" src="playground-spiral-big.png" alt="Playground: spiral dataset with a bigger network improving, test loss 0.363">
+      <figcaption>Figure 3 — Spiral dataset, 2 hidden layers (4, 3 neurons), epoch 7,676:
+      test loss 0.363, training loss 0.255. Curved wedges follow part of the spiral, but the model plateaus: still underfitting.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2 class="sec">Why Visualizing Neural Networks Matters: Summary</h2>
+    <p>Watching a network learn turns abstract failure modes into visible ones.
+    Underfitting looks like a boundary that never bends to fit the data (the small
+    spiral network). Noise looks like a boundary that stays fuzzy no matter how long
+    training runs. Overfitting, notably, never appeared in my runs: even the widest
+    train-test gap I saw (ReLU on circle, 0.000 vs 0.016) was small, a reminder that
+    overfitting is a diagnosis you check with held-out data, not something to assume
+    from model size alone. The deepest lesson is the last experiment: adding
+    sin(X&#8321;) and sin(X&#8322;) as features improved the spiral result more than
+    doubling the network did. Architecture matters, but representation matters more,
+    and you only learn that by seeing both fail and succeed side by side. That is
+    why visualization belongs in a practitioner's toolkit, not just a textbook:
+    it makes the model's behavior checkable before its predictions are trusted.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Process</h2>
+    <p>I started in the Neural Network Playground with its default configuration and
+    changed one variable at a time: dataset (circle, spiral), network size (one vs two
+    hidden layers), noise level (0 vs 20), activation function (Tanh, ReLU, Sigmoid),
+    and input features (adding sine transforms). Each run trained to a plateau of
+    roughly 2,000 epochs (7,676 for the deep spiral run) before I recorded losses and
+    captured the state. I then wrote the component explanations from the course
+    materials, built the architecture diagram to match the Playground's own layout
+    (inputs left, hidden layers center, output right, training loop returning), and
+    assembled this page as the second artifact in the portfolio.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Tools and Technologies Used</h2>
+    <p>TensorFlow Neural Network Playground (in-browser interactive training),
+    HTML/CSS with inline SVG for the architecture diagram, and GitHub Pages for
+    portfolio hosting.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Value Proposition — Unique Value and Relevance</h2>
+    <div class="callout">
+      <p style="margin:0">Artifact 1 showed I can choose the right algorithm; this
+      artifact shows I can explain how a neural network learns and diagnose why it
+      fails. For an engineer, that second skill is what turns a model from a demo into
+      a system you can debug: reading a loss curve, recognizing underfitting on sight,
+      and knowing when the fix is better features rather than a bigger network.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">References</h2>
+    <table class="refs">
+      <tr><td>TensorFlow Neural Network Playground. https://playground.tensorflow.org/</td></tr>
+      <tr><td>Nielsen, M. <em>Neural Networks and Deep Learning.</em> http://neuralnetworksanddeeplearning.com/</td></tr>
+      <tr><td>Goodfellow, I., Bengio, Y., &amp; Courville, A. <em>Deep Learning.</em> https://www.deeplearningbook.org/</td></tr>
+    </table>
+    <p class="small muted">All loss values and screenshots are from the author's own
+    Playground sessions, October 26, 2026. Playground page prints were cropped to the
+    interactive area; no values were altered.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">&copy; 2026 Qi Jin &middot; Professional portfolio for AIML-501: Model Development, Indiana Wesleyan University.</div>
+</footer>
+</body>
+</html>
