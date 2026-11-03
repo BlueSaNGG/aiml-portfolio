@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifact 3: Generative AI LLM Infrastructure | Qi Jin — Professional Portfolio</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  table.data{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0}
+  table.data th,table.data td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  table.data th{background:var(--accent-soft);color:var(--navy)}
+  .field{margin:8px 0}
+  .field .lbl{font-weight:700;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+  .flow-note{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>Generative AI LLM Infrastructure</h1>
+    <p class="sub">Artifact 3 &middot; AIML-501 Workshop Three &middot; Training process and costs</p>
+  </div>
+</header>
+<nav class="top">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="algorithm-types.html">Artifact 1: Algorithm Types</a>
+    <a href="neural-networks.html">Artifact 2: Visualizing Neural Networks</a>
+    <a href="llm-infrastructure.html" class="active">Artifact 3: LLM Infrastructure</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">Artifact Details</h2>
+    <div class="field"><span class="lbl">Title — </span>Generative AI LLM Infrastructure: Training Process and Costs</div>
+    <div class="field"><span class="lbl">Description — </span>An illustrated explanation of how large language models are built, from data curation through pretraining, fine-tuning, and alignment, and of what each stage costs in compute, data, energy, and engineering effort, including scaling laws and the efficiency techniques that reduce those costs.</div>
+    <div class="field"><span class="lbl">Classification — </span>Generative AI / Large Language Models; model training infrastructure and cost analysis.</div>
+    <div class="field"><span class="lbl">Purpose — </span>To demonstrate understanding of the full LLM training pipeline and its economics, so that decisions about model size, data scale, and deployment are made with real numbers rather than impressions.</div>
+    <div class="field"><span class="lbl">Artifact Type — </span>Web page (interactive portfolio artifact with diagrams and cost tables).</div>
+    <div class="field"><span class="lbl">Author — </span>Qi Jin</div>
+    <div class="field"><span class="lbl">Tags — </span>LLM, generative AI, pretraining, fine-tuning, RLHF, scaling laws, GPU compute, training cost, inference cost</div>
+    <div class="field"><span class="lbl">Creation Date — </span>November 2026</div>
+  </section>
+
+  <section>
+    <h2 class="sec">Introduction</h2>
+    <p>When a language model answers a question, the visible part is tiny: a prompt goes
+    in, text comes out. The invisible part is an industrial process that can consume
+    thousands of accelerators for months and cost millions of dollars before the first
+    user ever types a word. This artifact explains that process end to end and puts
+    numbers on it, because an engineer who cannot reason about training cost cannot
+    choose a model size, a data budget, or a deployment strategy responsibly.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Training Pipeline</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 760 170" role="img" aria-label="LLM training pipeline diagram">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#2f6fb2"></path>
+          </marker>
+        </defs>
+        <g font-size="13" font-weight="700" fill="#1f3b63" text-anchor="middle">
+          <rect x="10" y="50" width="110" height="64" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="65" y="78">DATA</text>
+          <text x="65" y="96" font-weight="400" font-size="12">curation &amp;</text>
+          <text x="65" y="112" font-weight="400" font-size="12">cleaning</text>
+          <rect x="140" y="50" width="110" height="64" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="195" y="78">TOKENIZE</text>
+          <text x="195" y="96" font-weight="400" font-size="12">text &#8594; token</text>
+          <text x="195" y="112" font-weight="400" font-size="12">sequences</text>
+          <rect x="270" y="50" width="110" height="64" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="325" y="78">PRETRAIN</text>
+          <text x="325" y="96" font-weight="400" font-size="12">next-token</text>
+          <text x="325" y="112" font-weight="400" font-size="12">prediction</text>
+          <rect x="400" y="50" width="110" height="64" rx="10" fill="#fff" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="455" y="78">FINE-TUNE</text>
+          <text x="455" y="96" font-weight="400" font-size="12">instruction</text>
+          <text x="455" y="112" font-weight="400" font-size="12">data (SFT)</text>
+          <rect x="530" y="50" width="110" height="64" rx="10" fill="#fff" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="585" y="78">ALIGN</text>
+          <text x="585" y="96" font-weight="400" font-size="12">RLHF / DPO,</text>
+          <text x="585" y="112" font-weight="400" font-size="12">safety evals</text>
+          <rect x="655" y="50" width="95" height="64" rx="10" fill="#fbeef4" stroke="#a33d7a" stroke-width="2"></rect>
+          <text x="702" y="78">DEPLOY</text>
+          <text x="702" y="96" font-weight="400" font-size="12">serve &amp;</text>
+          <text x="702" y="112" font-weight="400" font-size="12">monitor</text>
+        </g>
+        <g stroke="#2f6fb2" stroke-width="1.8" marker-end="url(#arr)">
+          <line x1="120" y1="82" x2="140" y2="82"></line>
+          <line x1="250" y1="82" x2="270" y2="82"></line>
+          <line x1="380" y1="82" x2="400" y2="82"></line>
+          <line x1="510" y1="82" x2="530" y2="82"></line>
+          <line x1="640" y1="82" x2="655" y2="82"></line>
+        </g>
+        <text x="380" y="145" text-anchor="middle" font-size="13" fill="#5a6a7a">Cost concentrates in pretraining; value concentrates in fine-tuning and alignment.</text>
+      </svg>
+    </div>
+    <p class="flow-note">Reading the diagram: each stage feeds the next, and cost is
+    wildly uneven across stages. Pretraining consumes the overwhelming majority of
+    compute; fine-tuning and alignment consume the majority of human judgment.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Stages, and What Each One Costs</h2>
+    <div class="grid">
+      <div class="algo">
+        <h4>1. Data Curation</h4>
+        <p><span class="lbl">What — </span>Collecting web text, books, code, and
+        licensed corpora, then deduplicating, filtering low-quality and toxic content,
+        and removing personal information. <span class="lbl">Cost — </span>Mostly
+        engineering time and storage, not accelerator time, but it decides the ceiling
+        of everything downstream: a model trained on polluted data cannot be fixed by
+        more compute.</p>
+      </div>
+      <div class="algo">
+        <h4>2. Tokenization</h4>
+        <p><span class="lbl">What — </span>Splitting text into tokens, the model's
+        actual input units, with a vocabulary of tens of thousands of pieces.
+        <span class="lbl">Cost — </span>Cheap to run, expensive to get wrong: a
+        tokenizer that wastes tokens on common words inflates every later cost, since
+        training cost scales with the number of tokens processed.</p>
+      </div>
+      <div class="algo">
+        <h4>3. Pretraining</h4>
+        <p><span class="lbl">What — </span>Training a transformer to predict the next
+        token on trillions of tokens, using data parallelism across thousands of GPUs
+        with high-bandwidth interconnects. <span class="lbl">Cost — </span>The
+        dominant cost of the whole pipeline, often 90% or more of total compute.
+        Approximate training compute follows 6&#215;N&#215;D floating-point operations,
+        where N is parameters and D is tokens.</p>
+      </div>
+      <div class="algo">
+        <h4>4. Supervised Fine-Tuning (SFT)</h4>
+        <p><span class="lbl">What — </span>Continuing training on curated
+        instruction-response pairs so the model follows instructions instead of merely
+        continuing text. <span class="lbl">Cost — </span>A small fraction of
+        pretraining compute, but a large share of human cost: high-quality instruction
+        data is written and reviewed by people, and its quality caps the model's
+        usefulness.</p>
+      </div>
+      <div class="algo">
+        <h4>5. Alignment (RLHF / DPO)</h4>
+        <p><span class="lbl">What — </span>Training a reward model from human
+        preference rankings, then optimizing the model against it (RLHF), or optimizing
+        preferences directly (DPO), plus safety evaluation and red-teaming.
+        <span class="lbl">Cost — </span>Moderate compute, heavy human and evaluation
+        cost. This stage is where the model learns to refuse harmful requests, admit
+        uncertainty, and behave consistently with its deployer's values.</p>
+      </div>
+      <div class="algo">
+        <h4>6. Deployment and Inference</h4>
+        <p><span class="lbl">What — </span>Serving the model behind an API or product,
+        with batching, caching, quantization, and monitoring. <span class="lbl">Cost — </span>
+        Recurring rather than one-time: at scale, total inference cost overtakes
+        training cost. Every token generated costs compute, so serving efficiency
+        (smaller models, distillation, speculative decoding, KV-cache management)
+        decides the product's margin.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">What Drives the Bill: Cost Breakdown</h2>
+    <table class="data">
+      <tr><th>Cost driver</th><th>What it includes</th><th>How it scales</th></tr>
+      <tr><td>Compute (accelerators)</td><td>GPU/TPU hours for pretraining, plus the cluster, interconnect, and idle time during failures and restarts.</td><td>Linearly with 6&#215;N&#215;D: doubling parameters or tokens roughly doubles FLOPs.</td></tr>
+      <tr><td>Data</td><td>Acquisition, licensing, cleaning pipelines, storage, and human annotation for fine-tuning and preference data.</td><td>With dataset size for pretraining; with quality bar, not volume, for alignment data.</td></tr>
+      <tr><td>Energy and cooling</td><td>Electricity for accelerators and data-center overhead (power usage effectiveness).</td><td>With compute, and with cluster location and cooling technology.</td></tr>
+      <tr><td>Engineering and operations</td><td>Distributed-training expertise, failure recovery, checkpointing, evaluation harnesses, and on-call operations.</td><td>With run duration and cluster size; the scarcest resource is often experienced engineers, not hardware.</td></tr>
+      <tr><td>Inference at scale</td><td>Serving fleet, batching infrastructure, caching, and monitoring for every user request.</td><td>With users and tokens generated; eventually exceeds the one-time training bill.</td></tr>
+    </table>
+    <p>Two published reference points make the scale concrete. GPT-3 (175 billion
+    parameters, about 300 billion training tokens) was reported at launch as a
+    multi-million-dollar training run. The Chinchilla study (Hoffmann et al., 2022)
+    then showed that many models were undertrained: for a fixed compute budget, the
+    compute-optimal balance is roughly 20 tokens per parameter, so a 70-billion-parameter
+    model trained on 1.4 trillion tokens (Chinchilla itself) outperformed much larger
+    models trained on less data. The practical consequence is that buying more
+    parameters without proportionally more data wastes money, and the cheapest
+    capability gain is often better data, not a bigger model.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Scaling Laws in One Paragraph</h2>
+    <p>Scaling laws (Kaplan et al., 2020; Hoffmann et al., 2022) describe a smooth,
+    predictable relationship: as compute, parameters, and data grow, loss falls as a
+    power law, with diminishing returns on each axis alone. That predictability is what
+    makes LLM budgets plannable: teams extrapolate from small runs to forecast what a
+    large run will cost and what loss it will reach, then choose the point where the
+    next dollar buys too little improvement. The same laws explain why the field moved
+    from "bigger is better" to "better balanced is better," and why inference
+    efficiency, distillation into smaller models, and mixture-of-experts architectures
+    (which activate only a fraction of parameters per token) have become first-class
+    cost levers rather than afterthoughts.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Efficiency Levers That Bring Costs Down</h2>
+    <ul>
+      <li><strong>Mixture of experts (MoE):</strong> total parameters grow while active parameters per token stay small, cutting compute per token.</li>
+      <li><strong>Quantization:</strong> serving weights at 8-bit or 4-bit precision shrinks memory and speeds inference with small quality loss.</li>
+      <li><strong>Distillation:</strong> training a small model to imitate a large one, keeping most capability at a fraction of serving cost.</li>
+      <li><strong>Data quality over quantity:</strong> aggressive filtering and deduplication can match larger-data results with fewer tokens.</li>
+      <li><strong>Checkpointing and fault tolerance:</strong> frequent checkpoints turn a cluster failure from a lost week into a lost hour.</li>
+      <li><strong>Caching and batching at inference:</strong> prefix caching and continuous batching raise accelerator utilization, which is usually the real serving bottleneck.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec">Summary: Why This Matters for a Practitioner</h2>
+    <p>Most engineers will never launch a frontier pretraining run, and that is exactly
+    why this artifact matters: the decisions most practitioners actually make are
+    downstream of these costs. Whether to fine-tune or prompt an existing model, whether
+    to distill or serve the full model, whether to pay for more data or more parameters,
+    and whether a product's margins survive its inference bill are all versions of the
+    same question: what does this capability cost, and where is the next dollar best
+    spent? The pipeline view answers the first half, the scaling view answers the
+    second, and together they turn LLM infrastructure from a headline number into a
+    trade-off an engineer can reason about.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Process</h2>
+    <p>I built this artifact from the course topic and the published scaling-law
+    literature, organizing it as a pipeline diagram plus stage-by-stage cost analysis
+    rather than a wall of prose, so that a reader can see where cost concentrates
+    before reading why. I verified the pipeline stages and the 6ND compute
+    approximation against the cited sources, kept cost figures at the level of
+    published reference points rather than inventing precise prices, and structured
+    the page to the portfolio's required fields (title, description, classification,
+    purpose, type, author, tags, creation date). The reflection for this artifact is
+    submitted separately through the Brightspace assignment text area, as the
+    portfolio requirements specify.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Tools and Technologies Used</h2>
+    <p>HTML/CSS with inline SVG for the pipeline diagram, GitHub Pages for portfolio
+    hosting, and published research (Kaplan et al., 2020; Hoffmann et al., 2022) as
+    sources for scaling-law claims.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Value Proposition — Unique Value and Relevance</h2>
+    <div class="callout">
+      <p style="margin:0">Artifact 1 showed I can choose an algorithm; Artifact 2
+      showed I can explain how a network learns and diagnose why it fails. This
+      artifact shows I can reason about the system around the model: the pipeline,
+      the budget, and the trade-offs that decide whether a model is worth building
+      and serving at all. That is the skill that connects coursework to real
+      engineering decisions.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">References</h2>
+    <table class="refs">
+      <tr><td>Kaplan, J., et al. (2020). Scaling Laws for Neural Language Models. arXiv:2001.08361.</td></tr>
+      <tr><td>Hoffmann, J., et al. (2022). Training Compute-Optimal Large Language Models (Chinchilla). arXiv:2203.15556.</td></tr>
+      <tr><td>Brown, T., et al. (2020). Language Models are Few-Shot Learners (GPT-3). arXiv:2005.14165.</td></tr>
+      <tr><td>Ouyang, L., et al. (2022). Training Language Models to Follow Instructions with Human Feedback (InstructGPT). arXiv:2203.02155.</td></tr>
+    </table>
+    <p class="small muted">Cost figures are published reference points and approximations
+    (notably the 6ND compute estimate), not quotations of any vendor price list; where
+    exact numbers vary by source, this page reports the widely cited value and says so.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">&copy; 2026 Qi Jin &middot; Professional portfolio for AIML-501: Model Development, Indiana Wesleyan University.</div>
+</footer>
+</body>
+</html>
