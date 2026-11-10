@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifact 4: Explainable AI (XAI) | Qi Jin — Professional Portfolio</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  table.data{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0}
+  table.data th,table.data td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  table.data th{background:var(--accent-soft);color:var(--navy)}
+  .field{margin:8px 0}
+  .field .lbl{font-weight:700;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+  .flow-note{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>Explainable AI: Making Model Decisions Understandable</h1>
+    <p class="sub">Artifact 4 &middot; AIML-501 Workshop Four &middot; Transparency, trust, and how we check a model</p>
+  </div>
+</header>
+<nav class="top">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="algorithm-types.html">Artifact 1: Algorithm Types</a>
+    <a href="neural-networks.html">Artifact 2: Visualizing Neural Networks</a>
+    <a href="llm-infrastructure.html">Artifact 3: LLM Infrastructure</a>
+    <a href="explainability.html" class="active">Artifact 4: Explainable AI</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">Artifact Details</h2>
+    <div class="field"><span class="lbl">Title — </span>Explainable AI: Making Model Decisions Understandable</div>
+    <div class="field"><span class="lbl">Description — </span>An illustrated introduction to explainable AI: what it means for a model to explain itself, why explanations matter for trust, accountability, and regulation, what makes them hard to produce, how validation metrics — including results from my own breast-cancer classification experiment — measure reliability, and which techniques, from SHAP and LIME to sparse autoencoders, the field and the major AI labs use today.</div>
+    <div class="field"><span class="lbl">Classification — </span>Explainable AI (XAI) / model interpretability; model evaluation and validation.</div>
+    <div class="field"><span class="lbl">Purpose — </span>To demonstrate understanding of why transparency matters in deployed machine learning, what limits current explanation methods, and how honest metrics and the right explanation technique together make a model trustworthy.</div>
+    <div class="field"><span class="lbl">Artifact Type — </span>Web page (infographic-style portfolio artifact with diagrams and comparison tables).</div>
+    <div class="field"><span class="lbl">Author — </span>Qi Jin</div>
+    <div class="field"><span class="lbl">Tags — </span>explainable AI, XAI, interpretability, SHAP, LIME, validation, recall, confusion matrix, regulation</div>
+    <div class="field"><span class="lbl">Creation Date — </span>November 2026</div>
+  </section>
+
+  <section>
+    <h2 class="sec">Introduction</h2>
+    <p>A model can be right and still be unusable. If a hospital's system flags a
+    tumor as malignant, the doctor needs to know <em>why</em> before acting on it.
+    If a bank's system denies a loan, the applicant is owed a reason, not just a
+    score. If a self-driving car brakes, its engineers need to know what it saw.
+    Accuracy alone does not answer any of these questions. Explainable AI — XAI —
+    is the part of machine learning that does: the methods, metrics, and habits
+    that let a human check a model's reasoning instead of taking it on faith. This
+    artifact explains what XAI is, why it matters, why it is hard, how we measure
+    whether a model deserves trust, and what the field's best tools can — and
+    cannot — do today.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">What Is Explainable AI, and Why It Matters</h2>
+    <p>Explainable AI is the practice of making a model's decisions understandable to
+    the people affected by them. An explanation can take many forms: the features
+    that pushed a prediction one way or the other, a readable rule ("if the cell
+    nucleus is large and irregular, flag as malignant"), a step-by-step chain of
+    reasoning, or a counterfactual ("the loan would have been approved if the
+    income had been $5,000 higher"). The common thread is that a human can inspect
+    the reason, challenge it, and decide whether to trust it.</p>
+    <p>Four reasons make explanations non-negotiable in serious deployments:</p>
+    <ul>
+      <li><strong>Trust.</strong> People do not hand over high-stakes decisions to a
+      system they cannot question. A doctor who can see <em>which</em> measurements
+      drove a diagnosis will use the tool; one who cannot will ignore it, and the
+      model helps no one.</li>
+      <li><strong>Accountability.</strong> When a model is wrong, someone has to
+      answer for it. An explanation turns "the model said so" into a checkable
+      claim: was the reasoning sound, or did it rest on a spurious pattern? Without
+      that, responsibility has nowhere to land.</li>
+      <li><strong>Debugging.</strong> Explanations are a diagnostic tool. The
+      classic failure mode is a model that is accurate for the wrong reason — a
+      classifier that "detects" pneumonia from the hospital's scanner brand rather
+      than from the lungs. Explanations expose that before deployment, not after a
+      failure.</li>
+      <li><strong>Regulation.</strong> The law increasingly demands explanations.
+      The European Union's AI Act (Regulation (EU) 2024/1689, in force since
+      1 August 2024) imposes transparency obligations on high-risk AI systems, and
+      in the United States lenders must give specific reasons when credit is denied
+      under the Equal Credit Opportunity Act. "The model decided" is not a legally
+      acceptable answer.</li>
+    </ul>
+    <p>Where the stakes are highest, the case is clearest. In <strong>healthcare</strong>,
+    a wrong call can cost a life, and a clinician must be able to overrule the
+    model with reasons. In <strong>finance</strong>, a denied loan or a flagged
+    transaction changes a person's livelihood and must be contestable. In
+    <strong>law and hiring</strong>, a screening decision that cannot be explained
+    cannot be checked for bias. Explanations are not a courtesy feature; in these
+    domains they are part of the product.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Black Box vs. Glass Box</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 760 250" role="img" aria-label="Black box versus glass box diagram">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#2f6fb2"></path>
+          </marker>
+        </defs>
+        <text x="190" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#1f3b63">BLACK BOX</text>
+        <text x="570" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#2e7d5b">GLASS BOX</text>
+        <g font-size="13" text-anchor="middle">
+          <rect x="20" y="70" width="110" height="70" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="75" y="98" font-weight="700" fill="#1f3b63">INPUT</text>
+          <text x="75" y="116" font-size="12" fill="#33475c">patient data,</text>
+          <text x="75" y="132" font-size="12" fill="#33475c">credit history</text>
+          <rect x="150" y="70" width="110" height="70" rx="10" fill="#152a47" stroke="#152a47" stroke-width="2"></rect>
+          <text x="205" y="98" font-weight="700" fill="#ffffff">MODEL</text>
+          <text x="205" y="116" font-size="12" fill="#c8d8ec">opaque:</text>
+          <text x="205" y="132" font-size="12" fill="#c8d8ec">no view inside</text>
+          <rect x="280" y="70" width="110" height="70" rx="10" fill="#fbeef4" stroke="#a33d7a" stroke-width="2"></rect>
+          <text x="335" y="98" font-weight="700" fill="#1f3b63">DECISION</text>
+          <text x="335" y="116" font-size="12" fill="#33475c">"malignant"</text>
+          <text x="335" y="132" font-size="12" fill="#33475c">— no reason given</text>
+          <rect x="410" y="70" width="110" height="70" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="465" y="98" font-weight="700" fill="#1f3b63">INPUT</text>
+          <text x="465" y="116" font-size="12" fill="#33475c">same data,</text>
+          <text x="465" y="132" font-size="12" fill="#33475c">same model</text>
+          <rect x="540" y="70" width="110" height="70" rx="10" fill="#ffffff" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="595" y="98" font-weight="700" fill="#1f3b63">MODEL +</text>
+          <text x="595" y="116" font-weight="700" fill="#1f3b63">EXPLANATION</text>
+          <text x="595" y="132" font-size="12" fill="#33475c">features shown</text>
+          <rect x="670" y="70" width="80" height="70" rx="10" fill="#eaf5ef" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="710" y="98" font-weight="700" fill="#1f3b63">DECISION</text>
+          <text x="710" y="116" font-size="12" fill="#33475c">+ why:</text>
+          <text x="710" y="132" font-size="12" fill="#33475c">top features</text>
+        </g>
+        <g stroke="#2f6fb2" stroke-width="1.8" marker-end="url(#arr)">
+          <line x1="130" y1="105" x2="150" y2="105"></line>
+          <line x1="260" y1="105" x2="280" y2="105"></line>
+          <line x1="520" y1="105" x2="540" y2="105"></line>
+          <line x1="650" y1="105" x2="670" y2="105"></line>
+        </g>
+        <text x="380" y="180" text-anchor="middle" font-size="13" fill="#5a6a7a">Same prediction. The difference is whether a human can check the reasoning behind it.</text>
+        <text x="380" y="205" text-anchor="middle" font-size="13" fill="#5a6a7a">A glass box does not have to be a simple model — explanations can be built around complex ones.</text>
+        <text x="380" y="230" text-anchor="middle" font-size="13" fill="#5a6a7a">The point is auditability, not simplicity.</text>
+      </svg>
+    </div>
+    <p class="flow-note">Reading the diagram: the black box and the glass box can
+    contain the same model and produce the same answer. What changes is whether
+    the decision arrives with a reason a human can inspect — and that reason is
+    what makes the decision trustworthy, debuggable, and contestable.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Why Explaining a Model Is Hard</h2>
+    <p>If explanations were easy, every model would ship with one. Four obstacles
+    make them genuinely hard:</p>
+    <div class="grid">
+      <div class="algo">
+        <h4>1. Complexity and Opacity</h4>
+        <p><span class="lbl">Problem — </span>Modern models have millions or
+        billions of parameters, and knowledge is stored in distributed patterns
+        across them, not in single readable rules. Worse, individual neurons are
+        often <em>polysemantic</em>: one neuron may respond to cats, to car wheels,
+        and to a particular shade of red, so reading a single neuron tells you
+        almost nothing about what the model "means" by it.</p>
+      </div>
+      <div class="algo">
+        <h4>2. Explanations Can Mislead</h4>
+        <p><span class="lbl">Problem — </span>Most explanations of complex models
+        are produced after the fact, by a second method that approximates the model.
+        A plausible-looking explanation is not necessarily a faithful one: it can
+        highlight features that sound convincing while the model actually relied on
+        something else. An explanation that is wrong but persuasive is worse than
+        no explanation, because it manufactures false confidence.</p>
+      </div>
+      <div class="algo">
+        <h4>3. Data Quality and Bias</h4>
+        <p><span class="lbl">Problem — </span>Explanations inherit whatever the
+        training data contains. If the data is biased — say, a hiring dataset that
+        under-represents a group — the model learns the bias, and the explanation
+        may even make it look justified by pointing to a correlated proxy feature.
+        Explaining a biased model does not fix the bias; it can launder it.</p>
+      </div>
+      <div class="algo">
+        <h4>4. Cost, Especially in Real Time</h4>
+        <p><span class="lbl">Problem — </span>Popular explanation tools work by
+        running the model many times with slightly changed inputs to see what
+        changes the output. That is affordable for one offline audit and expensive
+        for a live system answering thousands of requests per second. Real-time
+        explanations — a fraud system that must justify every blocked transaction
+        instantly — remain a real engineering constraint.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Validation and Metrics: How We Know Whether to Trust a Model</h2>
+    <p>Before a model can be explained, it must be <em>measured</em> — honestly.
+    Validation is the discipline of testing a model on data it has never seen,
+    so the reported numbers reflect real performance rather than memorization.
+    Two habits matter most: <strong>hold-out validation</strong> (train on one
+    part of the data, test on a separate part) and <strong>cross-validation</strong>
+    (rotate which part is held out, so every sample is tested once and the result
+    is not an accident of one lucky split). A model evaluated only on its training
+    data proves nothing; a model evaluated on held-out data, several folds over,
+    has earned its numbers.</p>
+    <p>Once the setup is honest, the metrics themselves must be chosen for the
+    decision at hand. Accuracy — the share of all predictions that are correct —
+    is the headline number, but it can hide the errors that matter. For a
+    classifier, the <strong>confusion matrix</strong> splits mistakes into their
+    kinds: false positives (flagged something that was not there) and false
+    negatives (missed something that was). From it come the metrics that tell the
+    real story:</p>
+    <ul>
+      <li><strong>Precision</strong> — of everything the model flagged positive, how much truly was positive. High precision means few false alarms.</li>
+      <li><strong>Recall</strong> — of everything truly positive, how much the model caught. High recall means few misses. In cancer screening, recall is the metric a missed diagnosis lives in.</li>
+      <li><strong>F1 score</strong> — the balance of precision and recall in one number, useful when both kinds of error matter.</li>
+      <li><strong>ROC-AUC</strong> — how well the model separates the classes across all decision thresholds, not just at one cutoff; 1.0 is perfect separation, 0.5 is chance.</li>
+    </ul>
+    <p>The experiment below, from my Workshop Four assignment 4.2, shows why
+    picking the right metric matters more than admiring the headline number.</p>
+    <table class="data">
+      <tr><th>Model</th><th>Test accuracy</th><th>Precision</th><th>Recall (malignant)</th><th>F1</th><th>ROC-AUC</th></tr>
+      <tr><td>Decision tree</td><td>0.9123</td><td>1.0000</td><td>0.7619</td><td>0.8649</td><td>0.9688</td></tr>
+      <tr><td>Neural network (MLP)</td><td>0.9649</td><td>1.0000</td><td>0.9048</td><td>0.9500</td><td>0.9957</td></tr>
+    </table>
+    <p><strong>Run details (so the numbers can be reproduced):</strong> Wisconsin
+    Breast Cancer (Diagnostic) dataset, 569 samples with 30 features; malignant is
+    the positive class (212 malignant, 357 benign). Fixed 80/20 stratified split,
+    random_state=42: 455 training samples, 114 test samples (42 malignant in the
+    test set). Decision tree: max_depth=5, min_samples_leaf=10, fit time 0.008 s.
+    Neural network: standard-scaled inputs, MLP with hidden layers (30, 15),
+    max_iter=1000, fit time 0.557 s.</p>
+    <p>Both models look strong on accuracy — 91% and 96% — and both have perfect
+    precision: neither raised a single false alarm (0 false positives). The
+    difference is in what they <em>missed</em>. The decision tree caught only 32
+    of the 42 cancers in the test set — it missed 10, a recall of 0.7619. The
+    neural network caught 38 and missed 4, a recall of 0.9048. In a clinic, those
+    six extra missed cancers are the whole story: accuracy alone would have
+    hidden them, because the 72 benign cases both models got right pad the
+    headline number. The right metric is the one that measures the error you
+    cannot afford — here, recall.</p>
+    <p>And the same experiment shows why accuracy and interpretability have to be
+    weighed <em>together</em>. The decision tree is fully readable — every decision
+    is a rule a person can read aloud — yet it missed more cancers. The neural
+    network is more accurate and completely opaque. Neither is the answer on its
+    own. The goal of explainable AI is to close that gap: a model that is both
+    accurate <em>and</em> checkable, so a clinician gets the network's recall
+    with the tree's auditability.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Current Solutions and Techniques</h2>
+    <p>The field has converged on a practical toolkit. The techniques differ in
+    what they explain and what they cost, so the choice depends on the model, the
+    audience, and the stakes — and the major AI labs are all investing in the
+    hardest part, understanding large models from the inside.</p>
+    <div class="grid">
+      <div class="algo">
+        <h4>SHAP</h4>
+        <p><span class="lbl">What — </span>SHAP (SHapley Additive exPlanations,
+        Lundberg &amp; Lee, 2017) assigns each feature a number for one prediction:
+        how much that feature pushed the result up or down, grounded in Shapley
+        values from cooperative game theory. Add the contributions up and you get
+        the prediction, which makes the explanation consistent and checkable.
+        <span class="lbl">Used for — </span>Credit scoring, clinical risk models,
+        any tabular model where "which feature mattered, and how much" is the
+        question a regulator or a doctor asks.</p>
+      </div>
+      <div class="algo">
+        <h4>LIME</h4>
+        <p><span class="lbl">What — </span>LIME (Local Interpretable
+        Model-agnostic Explanations, Ribeiro et al., 2016) explains one prediction
+        at a time: it probes the model with slightly changed versions of the input,
+        then fits a simple, readable model to that local neighborhood. It works
+        with any classifier, which is why it spread so fast.
+        <span class="lbl">Used for — </span>Explaining individual decisions in
+        text, image, and tabular models — for example, highlighting the words or
+        image regions that drove one classification.</p>
+      </div>
+      <div class="algo">
+        <h4>Attention Visualization and Probing</h4>
+        <p><span class="lbl">What — </span>For transformer models, attention maps
+        show which input tokens the model weighted most when producing an output,
+        and probing trains small classifiers on internal activations to test what
+        information each layer carries. <span class="lbl">Caveat — </span>
+        Attention shows focus, not reasoning: a model can attend to a word without
+        that word causing its answer, so attention maps are a clue, not proof.</p>
+      </div>
+      <div class="algo">
+        <h4>Chain-of-Thought Prompting</h4>
+        <p><span class="lbl">What — </span>Chain-of-thought prompting (Wei et al.,
+        2022) asks a large language model to write out intermediate reasoning steps
+        before answering. The steps make the model's stated reasoning visible, and
+        they often improve accuracy on multi-step problems. <span class="lbl">Caveat — </span>
+        The stated steps are generated text: they may be a post-hoc rationalization
+        rather than the computation that actually produced the answer.</p>
+      </div>
+      <div class="algo">
+        <h4>Sparse Autoencoders — Anthropic</h4>
+        <p><span class="lbl">What — </span>Anthropic's interpretability program
+        attacks the polysemantic-neuron problem directly. "Towards Monosemanticity"
+        (Bricken et al., 2023) trained sparse autoencoders to decompose a small
+        model's activations into single-meaning features; "Scaling Monosemanticity"
+        (Templeton et al., 2024) scaled the same method to Claude 3 Sonnet,
+        extracting millions of interpretable features — including a "Golden Gate
+        Bridge" feature that, when turned up, made the model describe itself as
+        the bridge. It is the clearest demonstration yet that a production model's
+        internals can be mapped in human terms.</p>
+      </div>
+      <div class="algo">
+        <h4>Industry Practice — OpenAI, Meta, Google</h4>
+        <p><span class="lbl">What — </span>OpenAI publishes work on using language
+        models to explain individual neurons, and documents each model's behavior
+        and limits in system cards. Meta and Google publish interpretability
+        research and tooling of their own; Google's Model Cards (Mitchell et al.,
+        2019) are a standard template for documenting a model's intended use, its
+        performance across groups, and its known limitations. The shared direction
+        is the same: explanations are becoming part of how a model ships, not an
+        afterthought added when something goes wrong.</p>
+      </div>
+    </div>
+    <table class="data">
+      <tr><th>Technique</th><th>What it explains</th><th>Limitation</th></tr>
+      <tr><td>SHAP</td><td>Each feature's contribution to one prediction, with a consistent total</td><td>Can be slow on large models; values are approximations for deep networks</td></tr>
+      <tr><td>LIME</td><td>Why one specific prediction happened, in local terms</td><td>Local only; explanations can shift between runs</td></tr>
+      <tr><td>Attention visualization</td><td>Which input parts the model focused on</td><td>Focus is not proof of reasoning</td></tr>
+      <tr><td>Chain-of-thought prompting</td><td>The model's stated step-by-step reasoning</td><td>Stated steps may not match the computation behind the answer</td></tr>
+      <tr><td>Sparse autoencoders</td><td>Individual interpretable features inside a large model</td><td>Expensive to train; coverage is partial, not the whole model</td></tr>
+      <tr><td>Inherently interpretable models (decision trees, linear models)</td><td>The entire decision rule, readable end to end</td><td>Often less accurate on complex data — see my 4.2 experiment above</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec">Solutions by Industry</h2>
+    <ul>
+      <li><strong>Healthcare:</strong> SHAP and LIME explanations on diagnostic and risk models, so a clinician can check which measurements drove a flag — and overrule it with reasons. Model cards document performance across patient groups.</li>
+      <li><strong>Finance:</strong> Feature-attribution explanations for credit decisions, which regulators require to be specific and contestable; fraud systems pair fast scoring with explanations for the transactions they block.</li>
+      <li><strong>Law and hiring:</strong> Screening models audited with explanation tools to detect reliance on proxy features (a zip code standing in for a protected attribute), so bias can be found and removed before deployment.</li>
+      <li><strong>Autonomous driving and robotics:</strong> Attention and saliency maps showing what the system saw before a maneuver, used in incident review and safety cases.</li>
+      <li><strong>Large language models:</strong> Chain-of-thought traces for reasoning, sparse-autoencoder feature maps from labs like Anthropic, and system cards from OpenAI documenting capabilities, limits, and evaluation results.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec">Summary: Why This Matters for a Practitioner</h2>
+    <p>Explainability is not a separate subject from model development; it is the
+    part that decides whether a model survives contact with the real world. A
+    model that cannot be checked cannot be trusted, debugged, defended, or
+    legally deployed in high-stakes settings. The honest workflow runs in order:
+    validate on held-out data, report the metric that measures the error you
+    cannot afford, and then explain — with the technique that fits the model and
+    the audience, while staying honest about what the explanation does not prove.
+    My 4.2 experiment is a small version of that workflow: the accuracy headline
+    said both models were good, recall said one was meaningfully safer, and the
+    interpretability gap said neither was finished. That is the judgment XAI
+    exists to support.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Process</h2>
+    <p>I built this artifact from the Workshop Four topic and the published
+    literature, organizing it as four questions — what XAI is and why it matters,
+    why it is hard, how validation measures trust, and what today's techniques
+    offer — so a non-technical reader can follow the argument without prior
+    knowledge. For the validation section I used my own 4.2 experiment rather than
+    textbook numbers: the Wisconsin Breast Cancer data, the exact split and model
+    settings, and the full metric table, so every number on the page is one I
+    actually produced. I verified the SHAP, LIME, chain-of-thought, Anthropic,
+    and EU AI Act references against their sources before writing, kept industry
+    claims at the level of established practice, and structured the page to the
+    portfolio's required fields (title, description, classification, purpose,
+    type, author, tags, creation date). The reflection for this artifact is
+    submitted separately through the Brightspace assignment text area, as the
+    portfolio requirements specify.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Tools and Technologies Used</h2>
+    <p>HTML/CSS with inline SVG for the black-box versus glass-box diagram, GitHub
+    Pages for portfolio hosting, and scikit-learn (Wisconsin Breast Cancer
+    dataset, decision tree and MLP classifiers) for the validation experiment
+    reported in the metrics section.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Value Proposition — Unique Value and Relevance</h2>
+    <div class="callout">
+      <p style="margin:0">Artifact 1 showed I can choose an algorithm; Artifact 2
+      showed I can explain how a network learns; Artifact 3 showed I can reason
+      about the system and budget around a model. This artifact shows I can answer
+      the question every real deployment eventually asks: <em>why should anyone
+      trust this model?</em> Validation metrics, honest about their limits, plus
+      explanations, honest about theirs — that combination is what turns a model
+      from a classroom exercise into a system a doctor, a regulator, or a user
+      can rely on.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">References</h2>
+    <table class="refs">
+      <tr><td>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). "Why Should I Trust You?": Explaining the Predictions of Any Classifier. KDD '16. arXiv:1602.04938.</td></tr>
+      <tr><td>Lundberg, S. M., &amp; Lee, S.-I. (2017). A Unified Approach to Interpreting Model Predictions. NeurIPS 2017. arXiv:1705.07874.</td></tr>
+      <tr><td>Wei, J., et al. (2022). Chain-of-Thought Prompting Elicits Reasoning in Large Language Models. NeurIPS 2022. arXiv:2201.11903.</td></tr>
+      <tr><td>Bricken, T., et al. (2023). Towards Monosemanticity: Decomposing Language Models With Dictionary Learning. Anthropic, Transformer Circuits Thread.</td></tr>
+      <tr><td>Templeton, A., et al. (2024). Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet. Anthropic, Transformer Circuits Thread.</td></tr>
+      <tr><td>Mitchell, M., et al. (2019). Model Cards for Model Reporting. FAT* 2019.</td></tr>
+      <tr><td>Regulation (EU) 2024/1689 (EU AI Act), entered into force 1 August 2024.</td></tr>
+    </table>
+    <p class="small muted">All experiment numbers in the validation section are from
+    the author's own 4.2 run (Wisconsin Breast Cancer dataset, 80/20 stratified
+    split, random_state=42); no other statistics on this page are invented.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">&copy; 2026 Qi Jin &middot; Professional portfolio for AIML-501: Model Development, Indiana Wesleyan University.</div>
+</footer>
+</body>
+</html>
