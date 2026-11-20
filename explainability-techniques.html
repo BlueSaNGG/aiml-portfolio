@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifact 5: Explainability Techniques — A Concept Map | Qi Jin — Professional Portfolio</title>
+<style>
+:root{
+  --navy:#1f3b63; --navy-dark:#152a47; --accent:#2f6fb2; --accent-soft:#e8f0f8;
+  --ink:#1c2733; --muted:#5a6a7a; --line:#d8e0e8; --card:#ffffff; --bg:#f4f7fa;
+  --green:#2e7d5b; --green-soft:#eaf5ef; --orange:#b25f2e; --purple:#7a4fa3; --magenta:#a33d7a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.6;font-size:17px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1020px;margin:0 auto;padding:0 20px}
+header.site{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-dark) 100%);color:#fff}
+header.site .wrap{padding:34px 20px 26px}
+header.site h1{margin:0 0 4px;font-size:30px;letter-spacing:.2px}
+header.site .sub{color:#c8d8ec;font-size:16px;margin:0}
+nav.top{background:var(--navy-dark)}
+nav.top .wrap{display:flex;flex-wrap:wrap;gap:18px;padding-top:10px;padding-bottom:10px}
+nav.top a{color:#dce8f5;font-size:15px;font-weight:600}
+nav.top a.active{color:#fff;border-bottom:2px solid #7fb2e0;padding-bottom:2px}
+section{padding:26px 0 6px}
+h2.sec{font-size:22px;color:var(--navy);border-bottom:2px solid var(--accent-soft);
+  padding-bottom:6px;margin:18px 0 12px}
+h3{color:var(--navy);margin:16px 0 6px;font-size:18px}
+p{margin:8px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:18px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(21,42,71,.06)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.callout{background:var(--accent-soft);border-left:4px solid var(--accent);
+  border-radius:8px;padding:14px 18px;margin:14px 0}
+.callout.green{background:var(--green-soft);border-left-color:var(--green)}
+.diagram{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin:14px 0;overflow-x:auto}
+.diagram svg{min-width:640px;width:100%;height:auto;display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+.algo{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;box-shadow:0 1px 3px rgba(21,42,71,.05)}
+.algo h4{margin:0 0 2px;font-size:17px;color:var(--navy)}
+.algo p{font-size:15px;margin:6px 0}
+.algo .lbl{font-weight:700;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.tag{font-size:12px;font-weight:700;color:#fff;padding:2px 8px;border-radius:999px}
+.tag.global{background:var(--green)} .tag.local{background:var(--accent)}
+.tag.agnostic{background:var(--purple)} .tag.specific{background:var(--orange)}
+.tag.pre{background:var(--magenta)} .tag.post{background:#5a6a7a}
+table.data{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0}
+table.data th,table.data td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+table.data th{background:var(--accent-soft);color:var(--navy)}
+.field{margin:8px 0}
+.field .lbl{font-weight:700;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:.4px}
+.flow-note{font-size:14px;color:var(--muted)}
+.flow{display:grid;grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr;gap:6px;align-items:stretch;margin:14px 0}
+.flow .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.flow .step h4{margin:0 0 4px;font-size:15px;color:var(--navy)}
+.flow .arr{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:20px;font-weight:700}
+@media (max-width:760px){.flow{grid-template-columns:1fr}.flow .arr{transform:rotate(90deg)}}
+footer{margin:34px 0 0;background:var(--navy-dark);color:#c8d8ec}
+footer .wrap{padding:18px 20px;font-size:14px}
+table.refs{font-size:15px}
+ul{margin:8px 0 8px 18px;padding:0}
+li{margin:4px 0}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>Explainability Techniques: A Concept Map</h1>
+    <p class="sub">Artifact 5 &middot; AIML-501 Workshop Five &middot; Classifying the tools that make models understandable</p>
+  </div>
+</header>
+<nav class="top">
+  <div class="wrap">
+    <a href="index.html">Home</a>
+    <a href="algorithm-types.html">Artifact 1: Algorithm Types</a>
+    <a href="neural-networks.html">Artifact 2: Visualizing Neural Networks</a>
+    <a href="llm-infrastructure.html">Artifact 3: LLM Infrastructure</a>
+    <a href="explainability.html">Artifact 4: Explainable AI</a>
+    <a href="explainability-techniques.html" class="active">Artifact 5: Explainability Techniques</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section>
+    <h2 class="sec">Artifact Details</h2>
+    <div class="field"><span class="lbl">Title — </span>Explainability Techniques: A Concept Map</div>
+    <div class="field"><span class="lbl">Description — </span>A concept map that classifies the main explainability techniques on three axes — scope (global vs. local), model access (model-specific vs. model-agnostic), and timing (pre-hoc vs. post-hoc) — shows how each technique connects to real-world applications, and examines the accuracy–interpretability trade-off honestly, including the evidence that it is a tendency rather than an iron law.</div>
+    <div class="field"><span class="lbl">Classification — </span>Explainable AI (XAI) / model interpretability; technique taxonomy and applied selection.</div>
+    <div class="field"><span class="lbl">Purpose — </span>To demonstrate that I can organize the explainability toolkit into a principled classification, relate each technique to the applications it serves, and choose the right technique for a given model, audience, and question.</div>
+    <div class="field"><span class="lbl">Artifact Type — </span>Web page (concept-map infographic with diagrams, a classification matrix, and technique–application mapping).</div>
+    <div class="field"><span class="lbl">Author — </span>Qi Jin</div>
+    <div class="field"><span class="lbl">Tags — </span>explainable AI, XAI, concept map, SHAP, LIME, counterfactual explanations, saliency maps, attention, partial dependence, decision trees, interpretability</div>
+    <div class="field"><span class="lbl">Creation Date — </span>November 2026</div>
+  </section>
+
+  <section>
+    <h2 class="sec">Introduction</h2>
+    <p>Artifact 4 asked <em>why</em> models need to be explainable. This artifact
+    asks the practitioner's follow-up question: <em>which</em> explanation technique,
+    for <em>which</em> model, for <em>which</em> audience? The field's toolkit is
+    large enough that listing techniques is no longer useful on its own — what a
+    working engineer needs is a map. This page is that map. It places seven
+    established techniques on three classification axes, traces each one to the
+    real-world applications it serves, and ends with the trade-off every
+    practitioner has to weigh: the tension between a model's accuracy and its
+    interpretability, and why that tension is real but not absolute.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Three Classification Axes</h2>
+    <p>Every technique on this map is classified on the same three axes. Together
+    they answer the three questions that determine whether a technique fits a
+    situation: <em>how much</em> of the model it explains, <em>what kind</em> of
+    model it works with, and <em>when</em> the explanation is produced.</p>
+    <div class="grid">
+      <div class="algo">
+        <h4>Axis 1 — Scope: Global vs. Local</h4>
+        <p><span class="lbl">Global — </span>Explains the model's behavior as a
+        whole: which features matter overall, how the model responds to a feature
+        across the dataset. Used for auditing, debugging, and understanding the
+        model before deployment.</p>
+        <p><span class="lbl">Local — </span>Explains one prediction for one input:
+        why <em>this</em> patient was flagged, why <em>this</em> loan was denied.
+        Used when a specific decision must be justified to the person it affects.</p>
+      </div>
+      <div class="algo">
+        <h4>Axis 2 — Model Access: Model-Specific vs. Model-Agnostic</h4>
+        <p><span class="lbl">Model-specific — </span>Works only with a particular
+        model family, because it reads something inside that model — gradients,
+        attention weights, or the tree structure itself. Often faster and more
+        faithful for the models it supports.</p>
+        <p><span class="lbl">Model-agnostic — </span>Works with any model, because
+        it only needs to query the model: feed inputs in, observe outputs. The
+        price of that generality is approximation — the explanation is built from
+        the model's behavior, not its internals.</p>
+      </div>
+      <div class="algo">
+        <h4>Axis 3 — Timing: Pre-Hoc vs. Post-Hoc</h4>
+        <p><span class="lbl">Pre-hoc (ante-hoc, intrinsic) — </span>The model is
+        interpretable by construction. There is no separate explanation step, so
+        there is nothing for an explainer to get wrong — the explanation <em>is</em>
+        the model. Decision trees and linear models are the classic examples.</p>
+        <p><span class="lbl">Post-hoc — </span>The explanation is produced after
+        the model is trained, by a second method that inspects or probes it. This
+        covers most of the modern toolkit — and it is why post-hoc explanations
+        must be checked for faithfulness: they approximate the model, they are not
+        the model.</p>
+      </div>
+      <div class="algo">
+        <h4>Why Three Axes, Not One List</h4>
+        <p>A flat list of techniques hides the decisions a practitioner actually
+        makes. The same technique can be the right choice in one setting and the
+        wrong one in another: SHAP answers a regulator's question about one denied
+        loan and an auditor's question about the whole model, but in two different
+        forms. Classifying on three axes makes those distinctions visible — and
+        makes it obvious when a technique cannot do what is being asked of it
+        (a local method cannot audit a whole model; a model-specific method cannot
+        explain a model it was not built for).</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">The Concept Map</h2>
+    <p>The map below organizes the seven techniques by scope first — the
+    practitioner's first question is whether the whole model or one prediction
+    needs explaining — and carries the other two axes as labels inside each node.
+    SHAP appears on both sides, because it is genuinely a two-scope method.</p>
+    <div class="diagram">
+      <svg viewBox="0 0 760 580" role="img" aria-label="Concept map of explainability techniques classified by scope, model access, and timing">
+        <!-- center node -->
+        <rect x="270" y="12" width="220" height="46" rx="10" fill="#152a47"></rect>
+        <text x="380" y="41" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">EXPLAINABILITY TECHNIQUES</text>
+        <!-- split lines -->
+        <g stroke="#2f6fb2" stroke-width="1.8" fill="none">
+          <line x1="380" y1="58" x2="380" y2="76"></line>
+          <line x1="190" y1="76" x2="570" y2="76"></line>
+          <line x1="190" y1="76" x2="190" y2="86"></line>
+          <line x1="570" y1="76" x2="570" y2="86"></line>
+          <line x1="190" y1="106" x2="190" y2="115"></line>
+          <line x1="190" y1="177" x2="190" y2="192"></line>
+          <line x1="190" y1="254" x2="190" y2="269"></line>
+          <line x1="570" y1="106" x2="570" y2="115"></line>
+          <line x1="570" y1="177" x2="570" y2="192"></line>
+          <line x1="570" y1="254" x2="570" y2="269"></line>
+          <line x1="570" y1="331" x2="570" y2="346"></line>
+          <line x1="570" y1="408" x2="570" y2="423"></line>
+        </g>
+        <text x="190" y="102" text-anchor="middle" font-size="15" font-weight="700" fill="#2e7d5b">GLOBAL — the whole model</text>
+        <text x="570" y="102" text-anchor="middle" font-size="15" font-weight="700" fill="#2f6fb2">LOCAL — one prediction</text>
+        <!-- global boxes -->
+        <g font-size="13">
+          <rect x="20" y="115" width="340" height="62" rx="10" fill="#eaf5ef" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="36" y="137" font-weight="700" fill="#1f3b63">Decision Trees</text>
+          <text x="36" y="155" font-size="12" fill="#5a6a7a">intrinsic &#183; model-specific &#183; pre-hoc</text>
+          <text x="36" y="172" font-size="12" fill="#33475c">The model itself is the explanation.</text>
+          <rect x="20" y="192" width="340" height="62" rx="10" fill="#eaf5ef" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="36" y="214" font-weight="700" fill="#1f3b63">Partial Dependence Plots</text>
+          <text x="36" y="232" font-size="12" fill="#5a6a7a">model-agnostic &#183; post-hoc</text>
+          <text x="36" y="249" font-size="12" fill="#33475c">How one feature moves the average prediction.</text>
+          <rect x="20" y="269" width="340" height="62" rx="10" fill="#eaf5ef" stroke="#2e7d5b" stroke-width="2"></rect>
+          <text x="36" y="291" font-weight="700" fill="#1f3b63">SHAP Summary Plots</text>
+          <text x="36" y="309" font-size="12" fill="#5a6a7a">model-agnostic &#183; post-hoc</text>
+          <text x="36" y="326" font-size="12" fill="#33475c">SHAP values aggregated into a global ranking.</text>
+        </g>
+        <!-- local boxes -->
+        <g font-size="13">
+          <rect x="400" y="115" width="340" height="62" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="416" y="137" font-weight="700" fill="#1f3b63">SHAP Values</text>
+          <text x="416" y="155" font-size="12" fill="#5a6a7a">model-agnostic &#183; post-hoc</text>
+          <text x="416" y="172" font-size="12" fill="#33475c">Each feature's push on one prediction.</text>
+          <rect x="400" y="192" width="340" height="62" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="416" y="214" font-weight="700" fill="#1f3b63">LIME</text>
+          <text x="416" y="232" font-size="12" fill="#5a6a7a">model-agnostic &#183; post-hoc</text>
+          <text x="416" y="249" font-size="12" fill="#33475c">A simple model fitted around one prediction.</text>
+          <rect x="400" y="269" width="340" height="62" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="416" y="291" font-weight="700" fill="#1f3b63">Counterfactual Explanations</text>
+          <text x="416" y="309" font-size="12" fill="#5a6a7a">model-agnostic &#183; post-hoc</text>
+          <text x="416" y="326" font-size="12" fill="#33475c">"What would have to change the decision?"</text>
+          <rect x="400" y="346" width="340" height="62" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="416" y="368" font-weight="700" fill="#1f3b63">Saliency Maps</text>
+          <text x="416" y="386" font-size="12" fill="#5a6a7a">model-specific &#183; post-hoc</text>
+          <text x="416" y="403" font-size="12" fill="#33475c">Which pixels drove this classification.</text>
+          <rect x="400" y="423" width="340" height="62" rx="10" fill="#e8f0f8" stroke="#2f6fb2" stroke-width="2"></rect>
+          <text x="416" y="445" font-weight="700" fill="#1f3b63">Attention Visualization</text>
+          <text x="416" y="463" font-size="12" fill="#5a6a7a">model-specific &#183; post-hoc</text>
+          <text x="416" y="480" font-size="12" fill="#33475c">Which tokens the model weighted most.</text>
+        </g>
+        <!-- bottom notes -->
+        <text x="380" y="522" text-anchor="middle" font-size="13" fill="#5a6a7a">SHAP appears on both sides: each prediction gets local values; aggregating them across</text>
+        <text x="380" y="542" text-anchor="middle" font-size="13" fill="#5a6a7a">the dataset gives a global view of feature importance.</text>
+        <text x="380" y="570" text-anchor="middle" font-size="13" fill="#5a6a7a">Green boxes are global, blue boxes are local. Model access and timing are shown inside each box.</text>
+      </svg>
+    </div>
+    <p class="flow-note">Reading the map: start at the center, then pick a side by
+    scope — the whole model or one prediction. Inside each node, the two remaining
+    axes tell you what the technique needs (any model, or a specific kind) and
+    when the explanation is made (built into the model, or added afterwards). A
+    technique is only a good fit when all three answers match the situation.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Classification Matrix</h2>
+    <p>The same classification in tabular form, so every placement on the map can
+    be checked at a glance.</p>
+    <table class="data">
+      <tr><th>Technique</th><th>Scope</th><th>Model access</th><th>Timing</th><th>What it produces</th></tr>
+      <tr><td><strong>Decision trees</strong></td><td>Global</td><td>Model-specific (intrinsic)</td><td>Pre-hoc</td><td>The full decision rule, readable end to end</td></tr>
+      <tr><td><strong>Partial dependence plots</strong></td><td>Global</td><td>Model-agnostic</td><td>Post-hoc</td><td>A curve showing how one feature shifts the average prediction</td></tr>
+      <tr><td><strong>SHAP</strong></td><td>Local; aggregates to global</td><td>Model-agnostic*</td><td>Post-hoc</td><td>Each feature's contribution to a prediction, summing to the output</td></tr>
+      <tr><td><strong>LIME</strong></td><td>Local</td><td>Model-agnostic</td><td>Post-hoc</td><td>A simple local model approximating the decision around one input</td></tr>
+      <tr><td><strong>Counterfactual explanations</strong></td><td>Local</td><td>Model-agnostic</td><td>Post-hoc</td><td>The smallest change to the input that would flip the decision</td></tr>
+      <tr><td><strong>Saliency maps</strong></td><td>Local</td><td>Model-specific</td><td>Post-hoc</td><td>A heatmap of the image regions that drove one classification</td></tr>
+      <tr><td><strong>Attention visualization</strong></td><td>Local</td><td>Model-specific</td><td>Post-hoc</td><td>A map of the input tokens a transformer weighted for one output</td></tr>
+    </table>
+    <p class="small muted">* SHAP is model-agnostic in principle — KernelSHAP works
+    with any model — but the fast implementations are model-specific: TreeSHAP for
+    tree ensembles, DeepSHAP for neural networks. The same method can therefore sit
+    in different places on the access axis depending on how it is computed.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Techniques, One by One</h2>
+    <div class="grid">
+      <div class="algo">
+        <h4>Decision Trees</h4>
+        <div class="tags"><span class="tag global">Global</span><span class="tag specific">Model-specific</span><span class="tag pre">Pre-hoc</span></div>
+        <p><span class="lbl">What — </span>A tree is interpretable by construction:
+        every prediction follows a path of readable if–then rules from root to leaf,
+        and the whole model fits on one page for a small tree. There is no separate
+        explainer, so the explanation cannot drift from the model.
+        <span class="lbl">Used for — </span>Clinical decision rules, credit policy,
+        and anywhere a human must be able to read the entire decision logic — and
+        as the baseline every post-hoc method is compared against.</p>
+      </div>
+      <div class="algo">
+        <h4>Partial Dependence Plots (PDP)</h4>
+        <div class="tags"><span class="tag global">Global</span><span class="tag agnostic">Model-agnostic</span><span class="tag post">Post-hoc</span></div>
+        <p><span class="lbl">What — </span>Introduced by Friedman (2001), a PDP
+        shows how the model's average prediction changes as one feature varies,
+        holding the others at their observed values. It answers "what does the model
+        think this feature does?" across the whole dataset.
+        <span class="lbl">Used for — </span>Auditing a model for sensible behavior
+        — for example, checking that a pricing model's response to mileage is
+        monotone — and for spotting reliance on a feature that should not matter.
+        <span class="lbl">Caveat — </span>It can mislead when features are strongly
+        correlated, because it averages over feature combinations that never occur
+        in reality.</p>
+      </div>
+      <div class="algo">
+        <h4>SHAP</h4>
+        <div class="tags"><span class="tag local">Local</span><span class="tag global">+ Global</span><span class="tag agnostic">Model-agnostic</span><span class="tag post">Post-hoc</span></div>
+        <p><span class="lbl">What — </span>SHAP (SHapley Additive exPlanations,
+        Lundberg &amp; Lee, 2017) assigns each feature a value for one prediction:
+        how much it pushed the result up or down, grounded in Shapley values from
+        cooperative game theory. The contributions add up to the prediction, which
+        makes the explanation consistent and checkable. Averaging the values across
+        the dataset produces a global importance ranking.
+        <span class="lbl">Used for — </span>Credit scoring and clinical risk models,
+        where "which feature mattered, and how much" is the question a regulator or
+        a doctor asks about one decision — and about the model as a whole.</p>
+      </div>
+      <div class="algo">
+        <h4>LIME</h4>
+        <div class="tags"><span class="tag local">Local</span><span class="tag agnostic">Model-agnostic</span><span class="tag post">Post-hoc</span></div>
+        <p><span class="lbl">What — </span>LIME (Local Interpretable Model-agnostic
+        Explanations, Ribeiro et al., 2016) explains one prediction at a time: it
+        probes the model with slightly changed versions of the input, then fits a
+        simple, readable model to that local neighborhood. It works with any
+        classifier, which is why it spread so fast.
+        <span class="lbl">Used for — </span>Explaining individual decisions in text,
+        image, and tabular models — for example, highlighting the words that drove
+        one document classification.
+        <span class="lbl">Caveat — </span>Explanations can shift between runs, and
+        the local model is only faithful in a small neighborhood around the input.</p>
+      </div>
+      <div class="algo">
+        <h4>Counterfactual Explanations</h4>
+        <div class="tags"><span class="tag local">Local</span><span class="tag agnostic">Model-agnostic</span><span class="tag post">Post-hoc</span></div>
+        <p><span class="lbl">What — </span>Proposed by Wachter, Mittelstadt, &amp;
+        Russell (2018), a counterfactual explanation states the smallest change to
+        an input that would have produced a different decision: "your loan would
+        have been approved if your income had been $5,000 higher." It needs only to
+        query the model, so it works with any classifier.
+        <span class="lbl">Used for — </span>Adverse-action notices in lending and
+        hiring, where the person affected needs a concrete, actionable reason — not
+        a feature weight, but a path to a different outcome.</p>
+      </div>
+      <div class="algo">
+        <h4>Saliency Maps</h4>
+        <div class="tags"><span class="tag local">Local</span><span class="tag specific">Model-specific</span><span class="tag post">Post-hoc</span></div>
+        <p><span class="lbl">What — </span>Introduced for convolutional networks by
+        Simonyan, Vedaldi, &amp; Zisserman (2014), a saliency map computes how
+        strongly each pixel influences the model's output and renders the result as
+        a heatmap over the image. It needs the model's gradients, so it only works
+        with differentiable models.
+        <span class="lbl">Used for — </span>Medical imaging (which region of the scan
+        drove the diagnosis) and autonomous driving (what the system saw before a
+        maneuver), where the evidence is spatial and must be seen, not listed.</p>
+      </div>
+      <div class="algo">
+        <h4>Attention Visualization</h4>
+        <div class="tags"><span class="tag local">Local</span><span class="tag specific">Model-specific</span><span class="tag post">Post-hoc</span></div>
+        <p><span class="lbl">What — </span>For transformer models (Vaswani et al.,
+        2017), attention maps show which input tokens the model weighted most when
+        producing an output. The weights are part of the model itself, but reading
+        them as an explanation happens after the fact, which is why attention
+        visualization sits on the post-hoc side of the map.
+        <span class="lbl">Used for — </span>Debugging language-model behavior and
+        translation, where seeing which words the model attended to helps explain
+        an odd output.
+        <span class="lbl">Caveat — </span>Attention shows focus, not reasoning: a
+        model can attend to a word without that word causing its answer, so an
+        attention map is a clue, not proof.</p>
+      </div>
+      <div class="algo">
+        <h4>What the Map Leaves Out — Deliberately</h4>
+        <p>Not every explainability idea fits on this map, and that is a design
+        choice, not an oversight. Chain-of-thought prompting and sparse autoencoders
+        (covered in Artifact 4) are explanation-adjacent — one generates stated
+        reasoning, the other decomposes a model's internals — but neither is a
+        technique for explaining a trained classifier's decision, so neither belongs
+        in this classification. A taxonomy earns its keep by what it excludes as
+        much as by what it includes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Techniques and Their Applications: The Relationships</h2>
+    <p>A classification only earns its keep when it predicts which technique fits
+    which job. The table below connects each application to the techniques that
+    serve it — and the reason is always the same: the application's question
+    determines the scope, the model determines the access, and the two together
+    pick the technique.</p>
+    <table class="data">
+      <tr><th>Application</th><th>Question being asked</th><th>Techniques that fit</th><th>Why they fit</th></tr>
+      <tr><td><strong>Credit decisions</strong></td><td>Why was this applicant denied — and what would change it?</td><td>Counterfactual explanations, SHAP</td><td>Per-applicant, contestable, and specific enough for adverse-action notices</td></tr>
+      <tr><td><strong>Medical diagnosis</strong></td><td>Which measurements drove this flag?</td><td>SHAP, saliency maps</td><td>Tabular risk models need feature contributions; imaging needs visual evidence</td></tr>
+      <tr><td><strong>Fraud detection</strong></td><td>Why was this transaction blocked?</td><td>LIME, SHAP</td><td>Fast local explanations at decision time, for any scoring model</td></tr>
+      <tr><td><strong>Autonomous driving</strong></td><td>What did the system see before this maneuver?</td><td>Saliency maps</td><td>The evidence is spatial — a heatmap over the camera frame</td></tr>
+      <tr><td><strong>Model audit &amp; fairness</strong></td><td>Does the model rely on a proxy for a protected attribute?</td><td>Partial dependence plots, SHAP summary</td><td>Only global methods show what the model does across the whole dataset</td></tr>
+      <tr><td><strong>Language models</strong></td><td>What did the model attend to in this input?</td><td>Attention visualization</td><td>Native to transformers; no other method reads attention weights</td></tr>
+      <tr><td><strong>Regulated rule systems</strong></td><td>Can a human read the entire decision logic?</td><td>Decision trees</td><td>Only a pre-hoc model has no gap between the model and its explanation</td></tr>
+    </table>
+    <h3>How to Choose: Four Questions in Order</h3>
+    <div class="flow">
+      <div class="step"><h4>1. Who is it for?</h4>A clinician, a loan applicant, a regulator, or an engineer debugging? The audience sets the language the explanation must speak.</div>
+      <div class="arr">&rarr;</div>
+      <div class="step"><h4>2. Global or local?</h4>The whole model's behavior, or why this one prediction happened? This picks the side of the map.</div>
+      <div class="arr">&rarr;</div>
+      <div class="step"><h4>3. Can you change the model?</h4>If yes, consider an interpretable model (pre-hoc). If the model is fixed, add a post-hoc explainer.</div>
+      <div class="arr">&rarr;</div>
+      <div class="step"><h4>4. Match the tool</h4>Tabular + local &rarr; SHAP / LIME. Image + local &rarr; saliency. "What would change it?" &rarr; counterfactuals. Audit &rarr; PDP / SHAP summary. Transformer &rarr; attention.</div>
+    </div>
+    <p class="flow-note">The order matters. Starting from the technique — "we use
+    SHAP" — and working backwards is how teams end up explaining the wrong thing:
+    a local explanation handed to an auditor who needed a global one, or a
+    post-hoc approximation where a readable model would have done. The question
+    comes first; the technique follows.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The Accuracy–Interpretability Trade-Off</h2>
+    <p>The chart below shows the pattern every practitioner meets: as models get
+    more flexible — and usually more accurate on complex data — they get harder
+    to explain. The dashed curve is the typical frontier: the accuracy you can
+    expect at each level of interpretability.</p>
+    <div class="diagram">
+      <svg viewBox="0 0 760 400" role="img" aria-label="Accuracy versus interpretability trade-off chart for common model families">
+        <defs>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#2f6fb2"></path>
+          </marker>
+        </defs>
+        <!-- grid -->
+        <g stroke="#d8e0e8" stroke-width="1">
+          <line x1="70" y1="90" x2="720" y2="90"></line>
+          <line x1="70" y1="150" x2="720" y2="150"></line>
+          <line x1="70" y1="210" x2="720" y2="210"></line>
+          <line x1="70" y1="270" x2="720" y2="270"></line>
+        </g>
+        <!-- axes -->
+        <g stroke="#1f3b63" stroke-width="2" marker-end="url(#arr2)">
+          <line x1="70" y1="320" x2="720" y2="320"></line>
+          <line x1="70" y1="320" x2="70" y2="30"></line>
+        </g>
+        <text x="395" y="352" text-anchor="middle" font-size="14" font-weight="700" fill="#1f3b63">More interpretable &rarr;</text>
+        <text x="28" y="175" text-anchor="middle" font-size="14" font-weight="700" fill="#1f3b63" transform="rotate(-90 28 175)">More accurate &rarr;</text>
+        <text x="70" y="340" font-size="12" fill="#5a6a7a">opaque</text>
+        <text x="720" y="340" text-anchor="end" font-size="12" fill="#5a6a7a">fully readable</text>
+        <!-- frontier curve -->
+        <path d="M140,90 C220,100 260,115 300,120 C330,125 350,140 370,150 C420,165 480,195 540,210 C580,220 610,232 640,240" fill="none" stroke="#a33d7a" stroke-width="2" stroke-dasharray="7,5"></path>
+        <text x="470" y="120" font-size="12" fill="#a33d7a" font-style="italic">typical frontier (a tendency, not a law)</text>
+        <!-- points -->
+        <g font-size="13" font-weight="700" fill="#1f3b63">
+          <circle cx="140" cy="90" r="8" fill="#a33d7a"></circle>
+          <text x="140" y="70" text-anchor="middle">Deep neural network</text>
+          <circle cx="300" cy="120" r="8" fill="#2f6fb2"></circle>
+          <text x="300" y="102" text-anchor="middle">Gradient boosting</text>
+          <circle cx="370" cy="150" r="8" fill="#2f6fb2"></circle>
+          <text x="370" y="132" text-anchor="middle">Random forest</text>
+          <circle cx="540" cy="210" r="8" fill="#2e7d5b"></circle>
+          <text x="540" y="192" text-anchor="middle">Decision tree</text>
+          <circle cx="640" cy="240" r="8" fill="#2e7d5b"></circle>
+          <text x="640" y="268" text-anchor="middle">Linear / logistic regression</text>
+        </g>
+        <text x="395" y="385" text-anchor="middle" font-size="12" fill="#5a6a7a">Positions are illustrative of the usual ordering, not measured values; the honest version of this chart is drawn from your own experiment, not from a textbook.</text>
+      </svg>
+    </div>
+    <div class="callout green">
+      <p style="margin:0"><strong>The honest caveat.</strong> The frontier above is
+      a tendency, not an iron law. Rudin (2019) argues that in many high-stakes
+      domains — medical risk scoring is her central example — a well-designed
+      interpretable model can match a black box, because the accuracy gap often
+      comes from a poorly tuned simple model being compared against a carefully
+      tuned complex one, not from any law of nature. The trade-off should be
+      <em>measured</em> in each domain, not assumed. My own Workshop Four
+      experiment is a case where the trade-off was real: the decision tree's
+      recall was 0.76 against the neural network's 0.90 on the same held-out test
+      set, so the readable model genuinely cost accuracy there — but that result
+      belongs to that dataset, and I would not carry it into the next domain
+      without measuring again.</p>
+    </div>
+    <p>That is the practical meaning of the chart: interpretability is a design
+    choice with a price that varies by problem. Where the price is zero, take the
+    interpretable model — there is nothing to trade away. Where the price is real,
+    as in my 4.2 experiment, the honest answer is a post-hoc explainer on the
+    accurate model, with the caveat that the explanation is an approximation and
+    must be checked. Either way, the decision is made with numbers, not with a
+    slogan.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Summary</h2>
+    <p>Explainability techniques are not interchangeable, and a list of them is
+    not a toolkit. The three axes — scope, model access, timing — turn the list
+    into a map: they show which techniques can answer which questions, which ones
+    can be combined (SHAP's local values aggregating into a global view), and
+    which ones cannot do what is being asked of them. The applications table shows
+    the map in use: the question determines the scope, the model determines the
+    access, and the two together pick the technique. And the trade-off chart
+    closes the argument honestly: accuracy and interpretability usually pull in
+    opposite directions, but the pull is a tendency to measure, not a law to
+    accept — and the measurement, as my 4.2 experiment showed, is what makes the
+    choice defensible.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Process</h2>
+    <p>I built this artifact by first fixing the classification scheme, then
+    placing the techniques in it — not the other way around. The three axes come
+    from the standard taxonomy in the interpretability literature (Molnar, 2022):
+    scope, model access, and timing are the dimensions the field itself uses to
+    sort methods. I chose scope as the map's primary split because it matches the
+    first question a practitioner asks — the whole model or this one prediction —
+    and carried the other two axes as labels inside each node, so the map stays
+    readable while the full classification is still visible. The hard placements
+    were the interesting ones: SHAP spans both scopes (local values, global
+    summary), so it appears twice rather than being forced into one box; attention
+    visualization is model-specific and post-hoc in use, even though the weights
+    it reads are part of the model; and decision trees are the only pre-hoc
+    technique in the set, which is itself a finding — nearly the entire modern
+    toolkit is post-hoc, which is why faithfulness is the field's central worry.
+    I verified each technique's description and citation against its source paper
+    before writing, kept the trade-off chart's positions explicitly illustrative,
+    and used my own 4.2 experiment — not a textbook number — as the one measured
+    trade-off on the page. The classification process and learning reflection are
+    in the accompanying document submitted with this artifact.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Tools and Technologies Used</h2>
+    <p>HTML/CSS with inline SVG for the concept map and the trade-off chart,
+    GitHub Pages for portfolio hosting, and scikit-learn (Wisconsin Breast Cancer
+    dataset, decision tree and MLP classifiers) for the validation experiment
+    cited in the trade-off section.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">Value Proposition — Unique Value and Relevance</h2>
+    <div class="callout">
+      <p style="margin:0">Artifact 4 showed I can explain <em>why</em> a model must
+      be explainable. This artifact shows I can <em>do</em> something about it:
+      given a model, an audience, and a question, I can pick the technique that
+      fits — and say why the others do not. That is the skill a deployment actually
+      needs: not knowing that SHAP exists, but knowing when SHAP is the answer,
+      when a counterfactual is, and when the right move is a readable model in the
+      first place. Combined with the validation discipline from Artifact 4, it is
+      the complete picture: measure honestly, then explain with the right tool.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">References</h2>
+    <table class="refs">
+      <tr><td>Friedman, J. H. (2001). Greedy Function Approximation: A Gradient Boosting Machine. <em>Annals of Statistics</em>, 29(5), 1189–1232.</td></tr>
+      <tr><td>Ribeiro, M. T., Singh, S., &amp; Guestrin, C. (2016). "Why Should I Trust You?": Explaining the Predictions of Any Classifier. KDD '16. arXiv:1602.04938.</td></tr>
+      <tr><td>Lundberg, S. M., &amp; Lee, S.-I. (2017). A Unified Approach to Interpreting Model Predictions. NeurIPS 2017. arXiv:1705.07874.</td></tr>
+      <tr><td>Vaswani, A., et al. (2017). Attention Is All You Need. NeurIPS 2017. arXiv:1706.03762.</td></tr>
+      <tr><td>Simonyan, K., Vedaldi, A., &amp; Zisserman, A. (2014). Deep Inside Convolutional Networks: Visualising Image Classification Models and Saliency Maps. ICLR Workshop. arXiv:1312.6034.</td></tr>
+      <tr><td>Wachter, S., Mittelstadt, B., &amp; Russell, C. (2018). Counterfactual Explanations without Opening the Black Box: Automated Decisions and the GDPR. <em>Harvard Journal of Law &amp; Technology</em>, 31(2), 841–887.</td></tr>
+      <tr><td>Rudin, C. (2019). Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead. <em>Nature Machine Intelligence</em>, 1, 206–215.</td></tr>
+      <tr><td>Molnar, C. (2022). <em>Interpretable Machine Learning</em> (2nd ed.). christophm.github.io/interpretable-ml-book/.</td></tr>
+    </table>
+    <p class="small muted">The trade-off chart's model positions are illustrative
+    of the usual ordering, not measured values; the only measured trade-off on
+    this page is the author's own 4.2 experiment (decision tree recall 0.7619 vs.
+    MLP recall 0.9048, Wisconsin Breast Cancer dataset, 80/20 stratified split,
+    random_state=42).</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">&copy; 2026 Qi Jin &middot; Professional portfolio for AIML-501: Model Development, Indiana Wesleyan University.</div>
+</footer>
+</body>
+</html>
